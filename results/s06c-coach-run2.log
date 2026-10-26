@@ -1,0 +1,154 @@
+04:33:57 coach: policy v2; list data/wordlist-stories.txt, vocab data/bpe/vocab4096.txt, window 10 reports, min gain 0.010 bits/token, rep4 rise 0.100, max halvings 3
+04:34:02 coach: run live at chunk 0, seq 0
+04:34:09 report chunk 100  loss 6.2223 nats = 8.9769 bits/token  lr 3.000e-03  scale 1.0000
+04:34:15 report chunk 200  loss 5.4617 nats = 7.8795 bits/token  lr 3.000e-03  scale 1.0000
+04:34:22 report chunk 300  loss 5.3327 nats = 7.6934 bits/token  lr 3.000e-03  scale 1.0000
+04:34:28 report chunk 400  loss 5.0691 nats = 7.3132 bits/token  lr 3.000e-03  scale 1.0000
+04:34:35 report chunk 500  loss 4.9563 nats = 7.1504 bits/token  lr 3.000e-03  scale 1.0000
+04:34:35 sample 1 prompt 1: hit5 0.984  big 0.492  rep4 0.966  words 62 |   herpping sandbox until sandbox until sandbox until sandbox until sandbox until sandbox until sandbox until sandbox until sandbox until sandbox until sandbox until sandbox until sandbox until sandbox until sandbox until sandbox until sandbox until sandbox until sandbox until sandbox until sandbox until sandbox until sandbox until sandbox until sandbox until sandbox until sandbox until sandbox until sandbox until sandbox until sandbox
+04:34:35 sample 1 prompt 2: hit5 0.962  big 0.962  rep4 0.940  words 53 |  recianianianianianianianianianian sandboxian sandbox sandbox sandbox sandbox sandbox sandbox sandbox sandbox sandbox sandbox sandbox sandbox sandbox sandbox sandbox sandbox sandbox sandbox sandbox sandbox sandbox sandbox sandbox sandbox sandbox sandbox sandbox sandbox sandbox sandbox sandbox sandbox sandbox sandbox sandbox sandbox sandbox sandbox sandbox sandbox sandbox sandbox sandbox sandbox sandbox sandbox sandbox sandbox sandbox sandbox sandbox
+04:34:41 report chunk 600  loss 4.8856 nats = 7.0485 bits/token  lr 3.000e-03  scale 1.0000
+04:34:48 report chunk 700  loss 4.9466 nats = 7.1364 bits/token  lr 3.000e-03  scale 1.0000
+04:34:54 report chunk 800  loss 4.9523 nats = 7.1447 bits/token  lr 3.000e-03  scale 1.0000
+04:35:00 report chunk 900  loss 5.0331 nats = 7.2612 bits/token  lr 3.000e-03  scale 1.0000
+04:35:07 report chunk 1000  loss 4.7710 nats = 6.8831 bits/token  lr 3.000e-03  scale 1.0000
+04:35:07 sample 2 prompt 1: hit5 1.000  big 0.016  rep4 0.934  words 64 | Then sandbox until belong belong belong belong belong belong belong belong belong belong belong belong belong belong belong belong belong belong belong belong belong belong belong belong belong belong belong belong belong belong belong belong belong belong belong belong belong belong belong belong belong belong belong belong belong belong belong belong belong belong belong belong belong belong belong belong belong belong belong belong belong
+04:35:07 sample 2 prompt 2: hit5 0.031  big 0.000  rep4 0.900  words 33 |  feels satkeep satkeep satkeep satkeep satkeep satkeep satkeep satkeep satkeep satkeep satkeep satkeep satkeep satkeep satkeep satkeep satkeep satkeep satkeep satkeep satkeep satkeep satkeep satkeep satkeep satkeep satkeep satkeep satkeep satkeep satkeep sat
+04:35:14 report chunk 1100  loss 4.8206 nats = 6.9547 bits/token  lr 3.000e-03  scale 1.0000
+04:35:20 report chunk 1200  loss 4.6766 nats = 6.7469 bits/token  lr 3.000e-03  scale 1.0000
+04:35:26 report chunk 1300  loss 4.8238 nats = 6.9593 bits/token  lr 3.000e-03  scale 1.0000
+04:35:33 report chunk 1400  loss 4.7759 nats = 6.8901 bits/token  lr 3.000e-03  scale 1.0000
+04:35:39 report chunk 1500  loss 4.9991 nats = 7.2122 bits/token  lr 3.000e-03  scale 1.0000
+04:35:39 sample 3 prompt 1: hit5 0.000  big 0.000  rep4 0.931  words 32 |  TimOK nextOK nextOK nextOK nextOK nextOK nextOK nextOK nextOK nextOK nextOK nextOK nextOK nextOK nextOK nextOK nextOK nextOK nextOK nextOK nextOK nextOK nextOK nextOK nextOK nextOK nextOK nextOK nextOK nextOK nextOK nextOK
+04:35:39 sample 3 prompt 2: hit5 0.033  big 0.000  rep4 0.750  words 35 | ling has rise nodded late noddedOK nextOK nextOK nextOK nextOK nextOK nextOK nextOK nextOK nextOK nextOK nextOK nextOK nextOK nextOK nextOK nextOK nextOK nextOK nextOK nextOK nextOK nextOK nextOK nextOK nextOK nextOK nextOK nextOK next
+04:35:46 report chunk 1600  loss 4.7927 nats = 6.9144 bits/token  lr 3.000e-03  scale 1.0000
+04:35:52 report chunk 1700  loss 4.9205 nats = 7.0988 bits/token  lr 3.000e-03  scale 1.0000
+04:35:59 report chunk 1800  loss 4.4818 nats = 6.4658 bits/token  lr 3.000e-03  scale 1.0000
+04:36:05 report chunk 1900  loss 4.6681 nats = 6.7347 bits/token  lr 3.000e-03  scale 1.0000
+04:36:12 report chunk 2000  loss 4.4558 nats = 6.4284 bits/token  lr 3.000e-03  scale 1.0000
+04:36:12 window: mean 6.8405 bits/token, gain 0.6082 over the previous window
+04:36:12 sample 4 prompt 1: hit5 0.000  big 0.000  rep4 0.846  words 16 |  herJackJackJack untilOKJackJack untilOKJackJack untilOKJackJack untilOKJackJack untilOKJackJack untilOKJackJack untilOKJackJack untilOKJackJack untilOKJackJack untilOKJackJack untilOKJackJack untilOKJackJack untilOKJackJack untilOKJackJack untilOKJackJack
+04:36:12 sample 4 prompt 2: hit5 0.500  big 0.059  rep4 0.438  words 19 |  rec looking late sat late sat late sat late sat late sat late satier until late satier until lateierierierierierierierierierierierierierierierierierierierierierierierierierierierierierierierierierierierierierierierierierierier
+04:36:18 report chunk 2100  loss 4.6064 nats = 6.6456 bits/token  lr 3.000e-03  scale 1.0000
+04:36:25 report chunk 2200  loss 4.6537 nats = 6.7139 bits/token  lr 3.000e-03  scale 1.0000
+04:36:31 report chunk 2300  loss 4.6213 nats = 6.6671 bits/token  lr 3.000e-03  scale 1.0000
+04:36:38 report chunk 2400  loss 4.3540 nats = 6.2815 bits/token  lr 3.000e-03  scale 1.0000
+04:36:44 report chunk 2500  loss 4.7122 nats = 6.7983 bits/token  lr 3.000e-03  scale 1.0000
+04:36:44 sample 5 prompt 1: hit5 0.675  big 0.024  rep4 0.667  words 42 |  next belong belong belong until belong belong belong until belong belong belong until belong belong belong until belong belong belong until late belongier sackier sackier sackier sackier sackierierier until lateierier until lateierier until lateierier until lateierier until lateierier until lateierier until lateierier
+04:36:44 sample 5 prompt 2: hit5 0.000  big 0.000  rep4 0.000  words 3 | ling used lateierierierierierierierierierierierierierierierierierierierierierierierierierierierierierierierierierierierierierierierierierierierierierierierierierierierierierierierierierierierierier
+04:36:51 report chunk 2600  loss 4.5567 nats = 6.5739 bits/token  lr 3.000e-03  scale 1.0000
+04:36:57 report chunk 2700  loss 4.6243 nats = 6.6715 bits/token  lr 3.000e-03  scale 1.0000
+04:37:04 report chunk 2800  loss 4.4530 nats = 6.4243 bits/token  lr 3.000e-03  scale 1.0000
+04:37:10 report chunk 2900  loss 4.4292 nats = 6.3899 bits/token  lr 3.000e-03  scale 1.0000
+04:37:17 report chunk 3000  loss 4.6160 nats = 6.6595 bits/token  lr 3.000e-03  scale 1.0000
+04:37:17 window: mean 6.5826 bits/token, gain 0.2580 over the previous window
+04:37:17 sample 6 prompt 1: hit5 1.000  big 0.175  rep4 0.869  words 64 |  next belong belong belong until late belong belong until late belong belong until late belong belong until late belong belong until late belong belong until late belong belong until late belong belong belong belong until late belong belong belong belong until late belong belong belong belong until late belong belong belong belong belong belong until late belong belong belong belong belong belong belong belong
+04:37:17 sample 6 prompt 2: hit5 0.970  big 0.000  rep4 0.950  words 63 |  treats lookingling belong late belong late belong late belong late belong late belong late belong late belong late belong late belong late belong late belong late belong late belong late belong late belong late belong late belong late belong late belong late belong late belong late belong late belong late belong late belong late belong late belong late belong late belong late belong
+04:37:23 report chunk 3100  loss 4.5382 nats = 6.5473 bits/token  lr 3.000e-03  scale 1.0000
+04:37:30 report chunk 3200  loss 4.4187 nats = 6.3749 bits/token  lr 3.000e-03  scale 1.0000
+04:37:36 report chunk 3300  loss 4.5506 nats = 6.5651 bits/token  lr 3.000e-03  scale 1.0000
+04:37:42 report chunk 3400  loss 4.4600 nats = 6.4344 bits/token  lr 3.000e-03  scale 1.0000
+04:37:49 report chunk 3500  loss 4.5493 nats = 6.5633 bits/token  lr 3.000e-03  scale 1.0000
+04:37:49 sample 7 prompt 1: hit5 0.000  big 0.000  rep4 0.931  words 32 |  beautifulier nextier nextier nextier nextier nextier nextier nextier nextier nextier nextier nextier nextier nextier nextier nextier nextier nextier nextier nextier nextier nextier nextier nextier nextier nextier nextier nextier nextier nextier nextier nextier
+04:37:49 coach: rep4 0.931 rose above the previous three (mean 0.794) by more than 0.10 -> scale 0.5000 (halving 1)
+04:37:49 sample 7 prompt 2: hit5 0.094  big 0.000  rep4 0.562  words 35 |  upset lookingier happily woke nextier happily woke nextier happilyier happilyier happilyier happilyier nextier nextier nextier nextier nextier nextier nextier nextier nextier nextier nextier nextier nextier nextier nextier nextier nextier nextier nextier nextier nextier nextier next
+04:37:55 report chunk 3600  loss 4.3398 nats = 6.2611 bits/token  lr 1.500e-03  scale 0.5000
+04:38:02 report chunk 3700  loss 4.4512 nats = 6.4218 bits/token  lr 1.500e-03  scale 0.5000
+04:38:08 report chunk 3800  loss 4.2904 nats = 6.1897 bits/token  lr 1.500e-03  scale 0.5000
+04:38:15 report chunk 3900  loss 4.3180 nats = 6.2296 bits/token  lr 1.500e-03  scale 0.5000
+04:38:21 report chunk 4000  loss 4.2721 nats = 6.1633 bits/token  lr 1.500e-03  scale 0.5000
+04:38:21 window: mean 6.3750 bits/token, gain 0.2075 over the previous window
+04:38:21 sample 8 prompt 1: hit5 0.969  big 0.000  rep4 0.967  words 63 |  happilyPlease next belong next belong next belong next belong next belong next belong next belong next belong next belong next belong next belong next belong next belong next belong next belong next belong next belong next belong next belong next belong next belong next belong next belong next belong next belong next belong next belong next belong next belong next belong next belong
+04:38:21 sample 8 prompt 2: hit5 0.550  big 0.148  rep4 0.519  words 55 | Maybe tired late keptMaybe satMaybe satMaybe before’s late carefully until late keptMaybe before’s woke carefullyier carefullyier carefullyier carefullyier carefullyier woke until late before woke until late before woke until late kept woke next woke next woke next woke next woke next woke next woke next woke next woke next woke next woke next
+04:38:28 report chunk 4100  loss 4.3437 nats = 6.2666 bits/token  lr 1.500e-03  scale 0.5000
+04:38:34 report chunk 4200  loss 4.6300 nats = 6.6796 bits/token  lr 1.500e-03  scale 0.5000
+04:38:41 report chunk 4300  loss 4.3678 nats = 6.3014 bits/token  lr 1.500e-03  scale 0.5000
+04:38:47 report chunk 4400  loss 4.4258 nats = 6.3850 bits/token  lr 1.500e-03  scale 0.5000
+04:38:54 report chunk 4500  loss 4.4000 nats = 6.3478 bits/token  lr 1.500e-03  scale 0.5000
+04:38:54 sample 9 prompt 1: hit5 0.000  big 0.000  rep4 0.679  words 31 |  happilyPlease kidsierierier pencilier pencilier pencilier pencilier pencilier pencilier pencilier penciliskers nextier pencilier pencilier penciliskers nextier pencilier penciliskers nextier penciliskers nextier penciliskers nextier penciliskers nextier penciliskers nextier penciliskers nextier penciliskers nextier penciliskers
+04:38:54 sample 9 prompt 2: hit5 0.947  big 0.049  rep4 0.661  words 62 |  upset Can laugh late laugh until towards before laugh lateWhy until towards before laugh lateWhy until towards before laugh late prin pencil prin pencil prin pencil prin pencil prin pencil prin pencil prin pencil prin pencil prin pencil prin pencil prin pencil prin pencil prin pencil prin pencil prin pencil prin pencil prin pencil prin pencil prin pencil prin pencil prin pencil
+04:39:00 report chunk 4600  loss 4.4480 nats = 6.4172 bits/token  lr 1.500e-03  scale 0.5000
+04:39:07 report chunk 4700  loss 4.3984 nats = 6.3455 bits/token  lr 1.500e-03  scale 0.5000
+04:39:13 report chunk 4800  loss 4.3183 nats = 6.2300 bits/token  lr 1.500e-03  scale 0.5000
+04:39:20 report chunk 4900  loss 4.2647 nats = 6.1527 bits/token  lr 1.500e-03  scale 0.5000
+04:39:26 report chunk 5000  loss 4.5246 nats = 6.5277 bits/token  lr 1.500e-03  scale 0.5000
+04:39:26 window: mean 6.3654 bits/token, gain 0.0097 over the previous window
+04:39:26 coach: plateau -> scale 0.2500 (halving 2), checkpoint requested
+04:39:26 sample 10 prompt 1: hit5 0.000  big 0.000  rep4 0.967  words 64 |  last woke next woke next woke next woke next woke next woke next woke next woke next woke next woke next woke next woke next woke next woke next woke next woke next woke next woke next woke next woke next woke next woke next woke next woke next woke next woke next woke next woke next woke next woke next woke next woke
+04:39:26 sample 10 prompt 2: hit5 1.000  big 0.032  rep4 0.836  words 64 |  meet tired looks before dirty woke looks woke looks woke looks woke woke until late woke woke woke woke woke woke woke woke woke woke woke woke woke woke woke woke woke woke woke woke woke woke woke woke woke woke woke woke woke woke woke woke woke woke woke woke woke woke woke woke woke woke woke woke woke woke woke woke woke
+04:39:33 report chunk 5100  loss 4.4672 nats = 6.4447 bits/token  lr 7.500e-04  scale 0.2500
+04:39:39 report chunk 5200  loss 4.2797 nats = 6.1744 bits/token  lr 7.500e-04  scale 0.2500
+04:39:46 report chunk 5300  loss 4.4079 nats = 6.3593 bits/token  lr 7.500e-04  scale 0.2500
+04:39:52 report chunk 5400  loss 4.1661 nats = 6.0104 bits/token  lr 7.500e-04  scale 0.2500
+04:39:59 report chunk 5500  loss 4.1776 nats = 6.0270 bits/token  lr 7.500e-04  scale 0.2500
+04:39:59 sample 11 prompt 1: hit5 0.000  big 0.000  rep4 0.333  words 12 |  happilyPlease kids wokePleasePlease nextPleasePleasePleasePleasePleasePleasePleasePleasePleasePleasePleasePleasePleasePleasePleasePleasePleasePleasePleasePleasePleasePleasePleasePleasePleasePleasePleasePleasePleasePleasePleasePleasePleasePleasePleasePleasePleasePleasePlease nextPleasePleasePlease nextPlease nextPlease nextPlease nextPlease nextPlease nextPlease nextPlease
+04:39:59 sample 11 prompt 2: hit5 1.000  big 0.016  rep4 0.918  words 64 |  rec looking happily amazed woke happily woke happily woke happily woke happily woke happily woke happily woke happily woke happily woke happily woke happily woke happily woke happily woke happily woke happily woke happily woke happily woke happily woke happily woke happily woke happily woke happily woke happily woke happily woke happily woke happily woke happily woke happily woke happily woke happily woke happily
+04:40:05 report chunk 5600  loss 4.0923 nats = 5.9040 bits/token  lr 7.500e-04  scale 0.2500
+04:40:12 report chunk 5700  loss 4.3754 nats = 6.3124 bits/token  lr 7.500e-04  scale 0.2500
+04:40:18 report chunk 5800  loss 4.3667 nats = 6.2998 bits/token  lr 7.500e-04  scale 0.2500
+04:40:25 report chunk 5900  loss 4.3388 nats = 6.2595 bits/token  lr 7.500e-04  scale 0.2500
+04:40:31 report chunk 6000  loss 4.3123 nats = 6.2213 bits/token  lr 7.500e-04  scale 0.2500
+04:40:31 window: mean 6.2013 bits/token, gain 0.1641 over the previous window
+04:40:31 sample 12 prompt 1: hit5 0.000  big 0.000  rep4 0.931  words 32 |  happilyPlease nextPlease nextPlease nextPlease nextPlease nextPlease nextPlease nextPlease nextPlease nextPlease nextPlease nextPlease nextPlease nextPlease nextPlease nextPlease nextPlease nextPlease nextPlease nextPlease nextPlease nextPlease nextPlease nextPlease nextPlease nextPlease nextPlease nextPlease nextPlease nextPlease nextPlease nextPlease
+04:40:31 sample 12 prompt 2: hit5 1.000  big 0.143  rep4 0.754  words 64 |  rec tired cars before cars before cars beautiful cars before cars beautiful cars before cars beautiful cars before cars beautiful feels sat towards before woke happily cars happily woke woke woke happily woke woke woke woke woke woke woke woke woke woke woke woke woke woke woke woke woke woke woke woke woke woke woke woke woke woke woke woke woke woke woke woke
+04:40:38 report chunk 6100  loss 4.2955 nats = 6.1970 bits/token  lr 7.500e-04  scale 0.2500
+04:40:44 report chunk 6200  loss 4.2514 nats = 6.1334 bits/token  lr 7.500e-04  scale 0.2500
+04:40:51 report chunk 6300  loss 4.2156 nats = 6.0819 bits/token  lr 7.500e-04  scale 0.2500
+04:40:57 report chunk 6400  loss 4.4523 nats = 6.4234 bits/token  lr 7.500e-04  scale 0.2500
+04:41:03 report chunk 6500  loss 4.5105 nats = 6.5073 bits/token  lr 7.500e-04  scale 0.2500
+04:41:04 sample 13 prompt 1: hit5 0.000  big 0.000  rep4 0.786  words 17 |  happilyPlease frogPleasePleasePlease frogPleasePleasePlease frogPleasePleasePlease frogPleasePleasePlease frogPleasePleasePlease frogPleasePleasePlease frogPleasePleasePlease frogPleasePleasePlease frogPleasePleasePlease frogPleasePleasePlease frogPleasePleasePlease frogPleasePleasePlease frogPleasePleasePlease frogPleasePleasePlease frogPleasePleasePlease frogPlease
+04:41:04 sample 13 prompt 2: hit5 0.278  big 0.081  rep4 0.571  words 38 |  pushed tired pushed late goodbye until lateHi explore kept friendshipHi explore beautiful friendship beautifulPlease beautifulPlease beautifulPlease beautifulPlease beautifulPlease beautifulPlease beautifulPlease beautifulPlease beautifulPlease beautifulPlease beautifulPlease beautifulPlease beautifulPlease beautifulPlease beautifulPlease beautifulPlease beautifulPlease beautifulPlease beautifulPlease beautifulPlease beautifulPlease beautifulPlease beautifulPlease beautifulPlease beautiful
+04:41:10 report chunk 6600  loss 4.3526 nats = 6.2795 bits/token  lr 7.500e-04  scale 0.2500
+04:41:17 report chunk 6700  loss 4.2950 nats = 6.1964 bits/token  lr 7.500e-04  scale 0.2500
+04:41:23 report chunk 6800  loss 4.0964 nats = 5.9099 bits/token  lr 7.500e-04  scale 0.2500
+04:41:29 report chunk 6900  loss 4.4848 nats = 6.4703 bits/token  lr 7.500e-04  scale 0.2500
+04:41:36 report chunk 7000  loss 4.5062 nats = 6.5010 bits/token  lr 7.500e-04  scale 0.2500
+04:41:36 window: mean 6.2700 bits/token, gain -0.0687 over the previous window
+04:41:36 coach: plateau -> scale 0.1250 (halving 3), checkpoint requested
+04:41:36 sample 14 prompt 1: hit5 0.000  big 0.000  rep4 0.931  words 32 |  happilyPlease beautifulPlease beautifulPlease beautifulPlease beautifulPlease beautifulPlease beautifulPlease beautifulPlease beautifulPlease beautifulPlease beautifulPlease beautifulPlease beautifulPlease beautifulPlease beautifulPlease beautifulPlease beautifulPlease beautifulPlease beautifulPlease beautifulPlease beautifulPlease beautifulPlease beautifulPlease beautifulPlease beautifulPlease beautifulPlease beautifulPlease beautifulPlease beautifulPlease beautifulPlease beautifulPlease beautifulPlease
+04:41:36 sample 14 prompt 2: hit5 1.000  big 0.032  rep4 0.951  words 64 |  seen before sometimes woke sometimes woke sometimes woke sometimes woke sometimes woke sometimes woke sometimes woke sometimes woke sometimes woke sometimes woke sometimes woke sometimes woke sometimes woke sometimes woke sometimes woke sometimes woke sometimes woke sometimes woke sometimes woke sometimes woke sometimes woke sometimes woke sometimes woke sometimes woke sometimes woke sometimes woke sometimes woke sometimes woke sometimes woke sometimes woke sometimes woke
+04:41:43 report chunk 7100  loss 4.2865 nats = 6.1842 bits/token  lr 3.750e-04  scale 0.1250
+04:41:49 report chunk 7200  loss 4.5879 nats = 6.6190 bits/token  lr 3.750e-04  scale 0.1250
+04:41:55 report chunk 7300  loss 4.1374 nats = 5.9689 bits/token  lr 3.750e-04  scale 0.1250
+04:42:02 report chunk 7400  loss 4.1818 nats = 6.0331 bits/token  lr 3.750e-04  scale 0.1250
+04:42:08 report chunk 7500  loss 4.1263 nats = 5.9531 bits/token  lr 3.750e-04  scale 0.1250
+04:42:08 sample 15 prompt 1: hit5 0.000  big 0.000  rep4 0.931  words 32 |  happilyPlease beautifulPlease beautifulPlease beautifulPlease beautifulPlease beautifulPlease beautifulPlease beautifulPlease beautifulPlease beautifulPlease beautifulPlease beautifulPlease beautifulPlease beautifulPlease beautifulPlease beautifulPlease beautifulPlease beautifulPlease beautifulPlease beautifulPlease beautifulPlease beautifulPlease beautifulPlease beautifulPlease beautifulPlease beautifulPlease beautifulPlease beautifulPlease beautifulPlease beautifulPlease beautifulPlease beautifulPlease
+04:42:08 sample 15 prompt 2: hit5 0.000  big 0.000  rep4 0.767  words 33 | ts feelsts feelsts feelsts feelsts feelsts feelsts feelsts feelsts feelsts feelsts feelsts feelsts feelsts feelsts feelsts feelsts feelsts feelsts feelsts feelsts feelsts feelsts feelsts feelsts feelsts wokets wokets wokets wokets wokets wokets woke
+04:42:15 report chunk 7600  loss 3.8558 nats = 5.5627 bits/token  lr 3.750e-04  scale 0.1250
+04:42:21 report chunk 7700  loss 4.3725 nats = 6.3081 bits/token  lr 3.750e-04  scale 0.1250
+04:42:28 report chunk 7800  loss 4.3961 nats = 6.3423 bits/token  lr 3.750e-04  scale 0.1250
+04:42:34 report chunk 7900  loss 4.2725 nats = 6.1638 bits/token  lr 3.750e-04  scale 0.1250
+04:42:41 report chunk 8000  loss 3.8996 nats = 5.6260 bits/token  lr 3.750e-04  scale 0.1250
+04:42:41 window: mean 6.0761 bits/token, gain 0.1939 over the previous window
+04:42:41 sample 16 prompt 1: hit5 0.061  big 0.000  rep4 0.700  words 33 |  happilyPlease until samePlease singingPlease singingPlease singingPlease singingPlease singingPlease singingPlease singingPlease singingPlease singingPlease singingPlease singingPlease singingPlease singingPlease singingPlease singingPlease singingPlease singingPlease singingPlease singingPlease singingPlease singingPlease singingOK singingOK singingOK singingOK singingOK singingOK singingOK singingOK singing
+04:42:41 sample 16 prompt 2: hit5 0.250  big 0.000  rep4 0.865  words 40 |  same feels same feels same feels same feels same feels same feels same feels same feels sameOK sameOK sameOK sameOK sameOK sameOK sameOK sameOK sameOK sameOK sameOK sameOK sameOK sameOK sameOK sameOK sameOK sameOK sameOK sameOK sameOK sameOK sameOK sameOK
+04:42:47 report chunk 8100  loss 4.4702 nats = 6.4491 bits/token  lr 3.750e-04  scale 0.1250
+04:42:54 report chunk 8200  loss 4.2705 nats = 6.1610 bits/token  lr 3.750e-04  scale 0.1250
+04:43:00 report chunk 8300  loss 4.0289 nats = 5.8125 bits/token  lr 3.750e-04  scale 0.1250
+04:43:07 report chunk 8400  loss 4.0394 nats = 5.8276 bits/token  lr 3.750e-04  scale 0.1250
+04:43:13 report chunk 8500  loss 4.3541 nats = 6.2816 bits/token  lr 3.750e-04  scale 0.1250
+04:43:13 sample 17 prompt 1: hit5 0.091  big 0.000  rep4 0.222  words 12 |  happilyPlease nextPleasePleasePleasePleasePleasePleasePleasePleasePleasePleasePleasePleasePleasePleasePlease nextPleasePleasePleasePleasePleasePleasePleasePleasePleasePleasePleasePleasePleasePleasePlease nextPleasePleasePleasePleasePleasePleasePleasePleasePleasePleasePleasePleasePleasePleasePlease nextPlease nextPlease nextPlease nextPlease nextPlease nextPlease next first
+04:43:13 sample 17 prompt 2: hit5 1.000  big 0.016  rep4 0.951  words 64 |  first tired eyes feels eyes feels eyes feels eyes feels eyes feels eyes feels eyes feels eyes feels eyes feels eyes feels eyes feels eyes feels eyes feels eyes feels eyes feels eyes feels eyes feels eyes feels eyes feels eyes feels eyes feels eyes feels eyes feels eyes feels eyes feels eyes feels eyes feels eyes feels eyes feels eyes feels eyes feels
+04:43:20 report chunk 8600  loss 4.1394 nats = 5.9719 bits/token  lr 3.750e-04  scale 0.1250
+04:43:26 report chunk 8700  loss 3.9909 nats = 5.7576 bits/token  lr 3.750e-04  scale 0.1250
+04:43:33 report chunk 8800  loss 4.1698 nats = 6.0157 bits/token  lr 3.750e-04  scale 0.1250
+04:43:39 report chunk 8900  loss 4.4090 nats = 6.3608 bits/token  lr 3.750e-04  scale 0.1250
+04:43:46 report chunk 9000  loss 4.1177 nats = 5.9406 bits/token  lr 3.750e-04  scale 0.1250
+04:43:46 window: mean 6.0578 bits/token, gain 0.0183 over the previous window
+04:43:46 sample 18 prompt 1: hit5 0.000  big 0.000  rep4 0.857  words 17 |  kidsPlease kidsPleasePleasePlease kidsPleasePleasePlease kidsPleasePleasePlease kidsPleasePleasePlease kidsPleasePleasePlease kidsPleasePleasePlease kidsPleasePleasePlease kidsPleasePleasePlease kidsPleasePleasePlease kidsPleasePleasePlease kidsPleasePleasePlease kidsPleasePleasePlease kidsPleasePleasePlease kidsPleasePleasePlease kidsPleasePleasePlease kidsPlease
+04:43:46 sample 18 prompt 2: hit5 1.000  big 0.508  rep4 0.918  words 64 |  until late until late next stories next stories next stories next stories next stories next stories next stories next stories next stories next stories next stories next stories next stories next stories next stories next stories next stories next stories next stories next stories next stories next stories next stories next stories next stories next stories next stories next stories next stories next stories
+04:43:52 report chunk 9100  loss 3.9525 nats = 5.7022 bits/token  lr 3.750e-04  scale 0.1250
+04:43:59 report chunk 9200  loss 4.4770 nats = 6.4589 bits/token  lr 3.750e-04  scale 0.1250
+04:44:05 report chunk 9300  loss 4.2056 nats = 6.0675 bits/token  lr 3.750e-04  scale 0.1250
+04:44:11 report chunk 9400  loss 3.9991 nats = 5.7695 bits/token  lr 3.750e-04  scale 0.1250
+04:44:18 report chunk 9500  loss 4.3414 nats = 6.2633 bits/token  lr 3.750e-04  scale 0.1250
+04:44:18 sample 19 prompt 1: hit5 0.000  big 0.000  rep4 0.462  words 16 |  kidsier kidsPleasePleasePleasePleasePleasePleasePleasePleasePlease kidsPleasePleasePleasePleasePlease kidsPleasePleasePleasePleasePlease kidsPleasePleasePleasePleasePlease kidsPleasePleasePleasePleasePlease kidsPleasePleasePleasePleasePlease kidsPleasePleasePleasePleasePlease beautifulPlease beautifulPlease beautifulPlease beautifulPlease beautifulPlease beautifulPlease beautifulPlease beautifulPlease
+04:44:18 sample 19 prompt 2: hit5 0.031  big 0.000  rep4 0.867  words 33 | Maybe beforeMaybe lateJust feelsMaybe lateJust feelsMaybe lateJust feelsMaybe lateJust feelsMaybe lateJust feelsMaybe lateJust feelsMaybe lateJust feelsMaybe lateJust feelsMaybe lateJust feelsMaybe lateJust feelsMaybe lateJust feelsMaybe lateJust feelsMaybe lateJust feelsMaybe lateJust feelsMaybe lateJust feelsMaybe late
+04:44:25 report chunk 9600  loss 3.9695 nats = 5.7267 bits/token  lr 3.750e-04  scale 0.1250
+04:44:31 report chunk 9700  loss 4.1662 nats = 6.0106 bits/token  lr 3.750e-04  scale 0.1250
+04:44:37 report chunk 9800  loss 4.2549 nats = 6.1385 bits/token  lr 3.750e-04  scale 0.1250
+04:44:44 report chunk 9900  loss 4.3687 nats = 6.3027 bits/token  lr 3.750e-04  scale 0.1250
+04:44:50 report chunk 10000  loss 4.2458 nats = 6.1254 bits/token  lr 3.750e-04  scale 0.1250
+04:44:50 window: mean 6.0565 bits/token, gain 0.0013 over the previous window
+04:44:50 coach: plateau at the floor (scale 0.1250), continuing
+04:46:19 coach: run ended (magic cleared); 3 halvings, final scale 0.1250

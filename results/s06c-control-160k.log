@@ -1,1 +1,7 @@
 === control: uncoached F64, 160k tokens (the coached run 1 budget), lr 3e-3 constant
+chunk   1000  tokens     32000  loss 4.7710 nats = 6.8831 bits/token  lr 3.00e-03  501 tok/s  (us/step: fwd+vote+head 892, bwd+grads+adam 1104)
+chunk   2000  tokens     64000  loss 4.4558 nats = 6.4284 bits/token  lr 3.00e-03  501 tok/s  (us/step: fwd+vote+head 888, bwd+grads+adam 1105)
+chunk   3000  tokens     96000  loss 4.6160 nats = 6.6595 bits/token  lr 3.00e-03  501 tok/s  (us/step: fwd+vote+head 890, bwd+grads+adam 1106)
+chunk   4000  tokens    128000  loss 4.3276 nats = 6.2434 bits/token  lr 3.00e-03  501 tok/s  (us/step: fwd+vote+head 888, bwd+grads+adam 1105)
+chunk   5000  tokens    160000  loss 4.5946 nats = 6.6287 bits/token  lr 3.00e-03  501 tok/s  (us/step: fwd+vote+head 889, bwd+grads+adam 1106)
+valid: 100000 tokens, loss 4.5287 nats = 6.5335 bits/token = 1.6495 bits/byte (3.961 B/token); train 319.3 s, valid 88.6 s

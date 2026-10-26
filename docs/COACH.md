@@ -94,3 +94,24 @@ from the loss windows only, uses the samples as a trend signal (a sample whose r
 three by more than 0.1, once per run), and stops only at the floor after two consecutive windows with a rising loss.
 The control for the number above is an uncoached run stopped at the same 160k tokens
 (`results/s06c-control-160k.log`); the coached v2 run over the full 320k budget follows.
+
+Control measured (`results/s06c-control-160k.log`): the uncoached F64 run stopped at the same 160k tokens validates at
+4.5287 nats = 6.5335 bits/token. At equal tokens the coached run 1 is 0.338 bits/token lower (6.1959), and it is also
+lower than the uncoached run at twice the tokens (6.2813). The action (rate decay to 3.75e-4 over the second half of
+the run) helped; the trigger was wrong. Policy v2 keeps the action and fixes the trigger.
+
+| run | tokens | learning rate | validation, bits/token |
+|---|---|---|---|
+| uncoached | 160k | 3e-3 constant | 6.5335 |
+| coached, policy v1 | 160k (stopped by the coach) | 3e-3, halved at about 1.5k, 3.5k and 4.5k chunks | 6.1959 |
+| uncoached | 320k | 3e-3 constant | 6.2813 |
+| coached, policy v2 | 320k (full budget, no stop) | 3e-3, halved at about 3.3k (repetition trend), 4.4k and 6.3k chunks (window gains 0.0097 and -0.069), floor 3.75e-4 from chunk 6.3k | 6.0940 |
+
+Outcome of the first coached budget (`results/s06c-coach-run2.log`, `results/s06c-coach-run2-card.log`): policy v2
+ran the whole 320k tokens at 498 tok/s, validation 4.2240 nats = 6.0940 bits/token = 1.5385 bits/byte, 0.187
+bits/token below the uncoached run on the same tokens and seed, and below the F32 cluster's 6.18 after 1M tokens
+(bus off, `results/s04-cluster.md` in the F32 repository). The three halvings came once from the repetition trend
+(a sample's rep4 0.931 against 0.794 for the previous three) and twice from the loss windows (gains 0.0097 and
+-0.069 bits/token); at the floor the last window still gained 0.0013 and the run was left to finish. The greedy
+samples loop to the end (rep4 0.46 to 0.97 in the last five), so at this budget the coach moved the loss and not the
+greedy coherence; sampled decoding with the repetition penalty is the generation path, and the longer runs follow.
