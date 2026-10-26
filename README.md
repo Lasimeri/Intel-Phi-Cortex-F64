@@ -80,6 +80,14 @@ Generation (`cortexd` on the card, `host/cortex` on the host, `results/s05c-gen-
 
 A seed spread of the F64 vs F32 validation difference; the F64 daemon with a longer-trained checkpoint; two instead of
 three Newton steps in the reciprocal seeds.
+## The coach
+
+`docs/COACH.md`: a training run publishes chunk, loss, learning rate and greedy samples into the host-memory part;
+`host/coach` decodes and scores the samples (`tools/coherence.h`, word and bigram lists built from the human corpus,
+4-gram repetition inside 256-word windows) and writes back a learning-rate scale, a checkpoint request and a stop flag.
+Gated on the card: sampling leaves every per-chunk loss identical; the knobs act from the next report. Nothing the coach
+writes and nothing the model generates is ever training data.
+
 ## Layout
 
 Identical to the F32 repository. `build.sh` builds the card programs with the Intel-Phi-LLVM S3 clang (`-march=knc`)

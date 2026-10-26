@@ -1,0 +1,10 @@
+=== coached run 1: CX_BUS=0 CX_COACH=500 cluster-gate run train10m.u16 coach1 32 320000 3e-3 valid.u16 100000 100
+cluster-gate run: 120 columns, L 32, warm 0, pin failures 0, thread 0 cpu 1, thread 119 cpu 240
+coach: control block at part 1344 MiB + 4096, greedy samples of 11 + 8 prompt tokens every 500 chunks
+run: 320000 tokens = 10000 chunks of 32, lr 0.003 (warm-up 50 chunks), b1 0.9 b2 0.95, bus off, valid 100000 tokens
+chunk    100  tokens      3200  loss 6.2223 nats = 8.9769 bits/token  lr 3.00e-03  499 tok/s  (us/step: fwd+vote+head 885, bwd+grads+adam 1117)
+chunk    200  tokens      6400  loss 5.4617 nats = 7.8795 bits/token  lr 3.00e-03  500 tok/s  (us/step: fwd+vote+head 885, bwd+grads+adam 1116)
+chunk    300  tokens      9600  loss 5.3327 nats = 7.6934 bits/token  lr 3.00e-03  499 tok/s  (us/step: fwd+vote+head 885, bwd+grads+adam 1117)
+chunk    400  tokens     12800  loss 5.0691 nats = 7.3132 bits/token  lr 3.00e-03  500 tok/s  (us/step: fwd+vote+head 886, bwd+grads+adam 1115)
+chunk    500  tokens     16000  loss 4.9563 nats = 7.1504 bits/token  lr 3.00e-03  499 tok/s  (us/step: fwd+vote+head 887, bwd+grads+adam 1116)
+chunk    600  tokens     19200  loss 4.8856 nats = 7.0485 bits/token  lr 3.00e-03  489 tok/s  (us/step: fwd+vote+head 885, bwd+grads+adam 1116)

@@ -1,0 +1,10 @@
+04:18:21 coach: list data/wordlist-stories.txt, vocab data/bpe/vocab4096.txt, window 10 reports, min gain 0.010 bits/token, rep4 band 0.036, max halvings 3
+04:18:27 coach: run live at chunk 0, seq 0
+04:18:33 report chunk 100  loss 6.2223 nats = 8.9769 bits/token  lr 3.000e-03  scale 1.0000
+04:18:40 report chunk 200  loss 5.4617 nats = 7.8795 bits/token  lr 3.000e-03  scale 1.0000
+04:18:46 report chunk 300  loss 5.3327 nats = 7.6934 bits/token  lr 3.000e-03  scale 1.0000
+04:18:53 report chunk 400  loss 5.0691 nats = 7.3132 bits/token  lr 3.000e-03  scale 1.0000
+04:18:59 report chunk 500  loss 4.9563 nats = 7.1504 bits/token  lr 3.000e-03  scale 1.0000
+04:18:59 sample 1 prompt 1: hit5 0.984  big 0.492  rep4 0.966  words 62 |   herpping sandbox until sandbox until sandbox until sandbox until sandbox until sandbox until sandbox until sandbox until sandbox until sandbox until sandbox until sandbox until sandbox until sandbox until sandbox until sandbox until sandbox until sandbox until sandbox until sandbox until sandbox until sandbox until sandbox until sandbox until sandbox until sandbox until sandbox until sandbox until sandbox until sandbox until sandbox
+04:18:59 sample 1 prompt 2: hit5 0.962  big 0.962  rep4 0.940  words 53 |  recianianianianianianianianianian sandboxian sandbox sandbox sandbox sandbox sandbox sandbox sandbox sandbox sandbox sandbox sandbox sandbox sandbox sandbox sandbox sandbox sandbox sandbox sandbox sandbox sandbox sandbox sandbox sandbox sandbox sandbox sandbox sandbox sandbox sandbox sandbox sandbox sandbox sandbox sandbox sandbox sandbox sandbox sandbox sandbox sandbox sandbox sandbox sandbox sandbox sandbox sandbox sandbox sandbox sandbox sandbox
+04:19:06 report chunk 600  loss 4.8856 nats = 7.0485 bits/token  lr 3.000e-03  scale 1.0000

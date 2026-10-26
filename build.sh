@@ -48,3 +48,6 @@ cc "${flags[@]}" -O2 -o "$out/host/ctrain-check" "$here/tools/ctrain-check.c" -l
 knc cortexd card/cortexd.c card/cdma.c
 cc "${flags[@]}" -O2 -o "$out/host/cortex" "$here/host/cortex.c" -lm
 cc "${flags[@]}" -O2 -o "$out/host/bpe" "$here/tools/bpe.c"
+
+# the coach (host)
+cc "${flags[@]}" -O2 -Wno-format-truncation -Wno-stringop-truncation -o "$out/host/coach" "$here/host/coach.c" -lm

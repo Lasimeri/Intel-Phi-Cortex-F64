@@ -8,6 +8,8 @@
  * cl-gcg.f32, cl-get.f32 (ETB layout). The host side: tools/ctrain-check.c.
  */
 #include "../card/cluster.h"
+#include "../lib/cx-proto.h"
+#include <fcntl.h>
 
 #include <stdio.h>
 #include <string.h>
@@ -58,6 +60,21 @@ static int dump(const char *name, int k, const void *p, size_t bytes)
 }
 
 /* per-thread arenas: the hot column at a staggered offset in page A, the streams in page B */
+/* ---- the coach (docs/COACH.md): control block in the host-memory part, read once per chunk; greedy samples every
+ * coach_every chunks with the fast-weight state and the bus row saved and restored around them ---- */
+static volatile uint8_t *kb;          /* NULL unless CX_COACH is set */
+static int coach_every;
+static uint32_t kprompt[2][16], ksample[2][64];
+static int knp[2];
+static volatile double kscale = 1.0;  /* learning-rate multiplier from the host, applied by every thread */
+static volatile uint64_t kflags;
+static double *tsave[CL_N], *bsave;
+#define KLD64(o) __atomic_load_n((uint64_t *)(kb + (o)), __ATOMIC_ACQUIRE)
+#define KST64(o, x) __atomic_store_n((uint64_t *)(kb + (o)), (x), __ATOMIC_RELEASE)
+#define KST32(o, x) __atomic_store_n((uint32_t *)(kb + (o)), (x), __ATOMIC_RELEASE)
+static inline uint64_t kbits(double d) { uint64_t u; memcpy(&u, &d, 8); return u; }
+static inline double kdbl(uint64_t u) { double d; memcpy(&d, &u, 8); return d; }
+
 static void setup(void *arg, int k)
 {
 	(void)arg;
@@ -92,6 +109,7 @@ static void setup(void *arg, int k)
 	C.dhc[k] = TAKE((size_t)CX_LMAX * CX_DU * 8);
 	C.lg[k] = TAKE((size_t)CX_LMAX * CL_MAXBLK * 16 * 8);
 	C.tgtrow[k] = TAKE(CX_DE * 8);
+	tsave[k] = TAKE(CX_NT * 8);
 	if (o > (8u << 20)) { fprintf(stderr, "cluster-gate: arena overflow %zu\n", o); exit(1); }
 	tr->ET = C.ETB;
 	tr->ES = C.ES;
@@ -164,6 +182,40 @@ static double *stage;   /* 120 x CX_NPARAM for the checkpoint */
 static double rwall[8];
 static uint64_t rcyc[4];
 
+static void coach_sample(int k)
+{
+	const int L = C.L;
+	memcpy(tsave[k], C.tr[k].col.T, CX_NT * 8);
+	if (!k) memcpy(bsave, C.bus, CL_BUS * 8);
+	for (int p = 0; p < 2; p++) {
+		memset(C.tr[k].col.T, 0, CX_NT * 8);
+		if (!k) memset(C.bus, 0, (size_t)(CX_LMAX + 1) * CL_BUS * 8);
+		cl_wait(&C, k);
+		const long total = knp[p] + 64;
+		uint32_t cur = kprompt[p][0], nxt;
+		for (long s = 0; s < total - 1; s++) {
+			const int t = (int)(s % L);
+			if (t == 0 && s) { cl_wait(&C, k); if (!k) cx_copy(C.bus, C.bus + (long)L * CL_BUS, CL_BUS); cl_wait(&C, k); }
+			const int prompt = s + 1 < knp[p];
+			nxt = prompt ? kprompt[p][s + 1] : 0;
+			cl_fwd_step(&C, k, t, cur, nxt, prompt ? nxt : 0);
+			const uint32_t am = cl_argmax(&C, k, t);
+			if (!prompt) { nxt = am; if (!k) ksample[p][s + 1 - knp[p]] = am; }
+			cur = nxt;
+		}
+		cl_wait(&C, k);
+	}
+	memcpy(C.tr[k].col.T, tsave[k], CX_NT * 8);
+	if (!k) {
+		memcpy(C.bus, bsave, CL_BUS * 8);
+		volatile uint16_t *out = (volatile uint16_t *)(kb + CX_K_SAMPLE);
+		for (int p = 0; p < 2; p++) for (int i = 0; i < 64; i++) out[p * 64 + i] = (uint16_t)ksample[p][i];
+		KST32(CX_K_NSAMPLE, 64);
+		KST64(CX_K_SEQ, KLD64(CX_K_SEQ) + 1);
+	}
+	cl_wait(&C, k);
+}
+
 static void run_train(void *arg, int k)
 {
 	(void)arg;
@@ -182,7 +234,7 @@ static void run_train(void *arg, int k)
 		const uint64_t c1 = cx_rdtsc();
 		b1k *= b1;
 		b2k *= b2;
-		const double lr_k = run_lr * (ch < warm_chunks ? (double)(ch + 1) / warm_chunks : 1.0);
+		const double lr_k = run_lr * (ch < warm_chunks ? (double)(ch + 1) / warm_chunks : 1.0) * (kb ? kscale : 1.0);
 		const double bc2 = sqrt(1.0 - b2k), lr_t = lr_k * bc2 / (1.0 - b1k), eps_t = eps * bc2;
 		cl_bwd_chunk(&C, k, id, b1, b2, lr_t, eps_t);   /* ends with barrier G */
 		const uint64_t c2 = cx_rdtsc();
@@ -197,6 +249,7 @@ static void run_train(void *arg, int k)
 				const double now = cx_now(), n = (ch + 1) % run_every ? (ch + 1) % run_every : run_every;
 				printf("chunk %6ld  tokens %9ld  loss %.4f nats = %.4f bits/token  lr %.2e  %.0f tok/s  (us/step: fwd+vote+head %.0f, bwd+grads+adam %.0f)\n",
 				       ch + 1, (ch + 1) * (long)L, acc / n, acc / n / CX_LN2, lr_k, n * L / (now - rwall[1]), rcyc[0] / 1238.093 / (n * L), rcyc[1] / 1238.093 / (n * L));
+				if (kb) { KST64(CX_K_CHUNK, (uint64_t)(ch + 1)); KST64(CX_K_LOSS, kbits(acc / n)); KST64(CX_K_LR, kbits(lr_k)); }
 				fflush(stdout);
 				acc = 0;
 				rwall[1] = now;
@@ -209,6 +262,22 @@ static void run_train(void *arg, int k)
 			if (!k) { char p[512]; snprintf(p, sizeof p, "%s/ckpt-%ld.bin", outdir, ch + 1); write_ckpt(p); printf("checkpoint %s\n", p); fflush(stdout); }
 		}
 		cl_wait(&C, k);   /* H: bus[0] visible */
+		if (kb) {
+			if (!k) {
+				const double sc = kdbl(KLD64(CX_K_SCALE));
+				kscale = sc > 0 && sc < 100 ? sc : 1.0;
+				kflags = KLD64(CX_K_FLAGS);
+				KST64(CX_K_ACK, kflags);
+			}
+			cl_wait(&C, k);   /* I: the knobs are visible to every thread */
+			if (kflags & 1) {
+				memcpy(stage + (long)k * CX_NPARAM, C.tr[k].col.prm, CX_NPARAM * 8);
+				cl_wait(&C, k);
+				if (!k) { char p[512]; snprintf(p, sizeof p, "%s/ckpt-coach-%ld.bin", outdir, ch + 1); write_ckpt(p); printf("checkpoint %s (coach)\n", p); fflush(stdout); KST64(CX_K_FLAGS, kflags & ~1ull); }
+			}
+			if (coach_every && (ch + 1) % coach_every == 0 && ch + 1 < nchunks) coach_sample(k);
+			if (kflags & 2) { if (!k) { printf("coach: stop at chunk %ld\n", ch + 1); fflush(stdout); } break; }
+		}
 	}
 	if (!k) rwall[2] = cx_now();
 	/* validation: forward only from zero state and a zero bus */
@@ -262,10 +331,30 @@ static int run_mode(int argc, char **argv)
 	stage = huge((size_t)CL_N * CX_NPARAM * 8 + (4u << 20));
 	if (getenv("CX_CKPT_EVERY")) ckpt_every = atoi(getenv("CX_CKPT_EVERY"));
 	if (getenv("CX_INIT")) { if (load_ckpt(getenv("CX_INIT"))) return 1; printf("run: weights, cg and embedding loaded from %s\n", getenv("CX_INIT")); }
+	if (getenv("CX_COACH")) {
+		coach_every = atoi(getenv("CX_COACH"));
+		const int fd = open("/dev/phihost", O_RDWR | O_SYNC);
+		void *m = fd < 0 ? MAP_FAILED : mmap(NULL, CX_DATA, PROT_READ | PROT_WRITE, MAP_SHARED, fd, (off_t)CX_PART_MIB << 20);
+		if (m == MAP_FAILED) { perror("coach: /dev/phihost"); return 1; }
+		kb = m;
+		const char *pp[2] = { getenv("CX_KPROMPT1") ? getenv("CX_KPROMPT1") : "/tmp/cortex/prompt1.u16", getenv("CX_KPROMPT2") ? getenv("CX_KPROMPT2") : "/tmp/cortex/prompt2.u16" };
+		for (int p = 0; p < 2; p++) {
+			FILE *f = fopen(pp[p], "rb"); uint16_t t[16];
+			knp[p] = f ? (int)fread(t, 2, 16, f) : 0;
+			if (f) fclose(f);
+			if (knp[p] < 1) { fprintf(stderr, "coach: cannot read prompt %s\n", pp[p]); return 1; }
+			for (int i = 0; i < knp[p]; i++) kprompt[p][i] = t[i];
+		}
+		bsave = aligned_alloc(64, CL_BUS * 8);
+		KST64(CX_K_CHUNK, 0); KST64(CX_K_SEQ, 0); KST64(CX_K_FLAGS, 0); KST64(CX_K_ACK, 0); KST64(CX_K_SCALE, kbits(1.0)); KST32(CX_K_NSAMPLE, 0);
+		KST32(CX_K_MAGIC, CX_K_MAGIC_VAL);
+		printf("coach: control block at part %u MiB + %u, greedy samples of %d + %d prompt tokens every %d chunks\n", CX_PART_MIB, CX_K_MAGIC, knp[0], knp[1], coach_every);
+	}
 	printf("run: %ld tokens = %ld chunks of %d, lr %g (warm-up 50 chunks), b1 0.9 b2 0.95, bus %s, valid %ld tokens\n", run_ntok - 1, (run_ntok - 1) / C.L, C.L, run_lr,
 	       bus_on ? "on" : "off", run_nval - 1);
 	fflush(stdout);
 	cx_team_run(CL_N, run_train, NULL);
+	if (kb) { KST32(CX_K_MAGIC, 0); KST64(CX_K_CHUNK, 0); }
 	char path[512];
 	snprintf(path, sizeof path, "%s/ckpt.bin", outdir);
 	f = fopen(path, "wb");

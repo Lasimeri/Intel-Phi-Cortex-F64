@@ -46,3 +46,17 @@
 #define CX_STAGE (1u << 20)        /* the staged checkpoint (F64: 46,926,848 B), host-written before CX_OP_LOAD */
 
 #endif
+
+/* ---- the coach's control block (docs/COACH.md): a training run publishes its state and reads the host's knobs here.
+ * Offsets are bytes from the part start, below CX_DATA (64 KiB) and clear of the generation mailbox fields above. */
+#define CX_K_MAGIC 4096           /* u32 "COCH" while a run is live, cleared on exit */
+#define CX_K_CHUNK 4104           /* u64 chunks done (card) */
+#define CX_K_LOSS 4112            /* f64 mean training loss of the last report window, nats/token (card) */
+#define CX_K_LR 4120              /* f64 learning rate in effect (card) */
+#define CX_K_SEQ 4128             /* u64 increments after each sample write (card) */
+#define CX_K_NSAMPLE 4136         /* u32 tokens per sample row (card) */
+#define CX_K_SAMPLE 4160          /* u16[2][64]: greedy continuations of the two fixed prompts (card) */
+#define CX_K_SCALE 4480           /* f64 learning-rate multiplier applied from the next chunk on, default 1.0 (host) */
+#define CX_K_FLAGS 4488           /* u64 bit 0 save a checkpoint now, bit 1 stop after the current chunk (host) */
+#define CX_K_ACK 4496             /* u64 the host's flags word as last acted on (card) */
+#define CX_K_MAGIC_VAL 0x48434f43u /* "COCH" little-endian */

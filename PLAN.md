@@ -42,6 +42,12 @@ measured. Design notes for the model itself are in the F32 repository's PLAN.md.
 
 A column is 402,176 B in F64; two per core exceed the 512 KiB L2.
 
+## Stage 6: the coach
+
+`docs/COACH.md`. The trainer publishes its state and greedy samples over the mailbox; the host scores the samples and
+steers the learning rate, checkpoints and the stop. Gated: sampling leaves the training trajectory bit-identical; the
+knobs take effect at the next report. No text written by the supervisor and no model output is ever training data.
+
 ## Open
 
 - Two Newton steps instead of three in `cx_rcp` and `cx_rsqrt` (bit count says 46 -> 92 bits suffices): unmeasured.

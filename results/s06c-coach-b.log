@@ -1,0 +1,21 @@
+04:15:14 coach: list data/wordlist-stories.txt, vocab data/bpe/vocab4096.txt, window 3 reports, min gain 0.010 bits/token, rep4 band 0.036, max halvings 3 (forced scale)
+04:15:14 coach: run live at chunk 200, seq 3
+04:15:16 report chunk 0  loss 4.9585 nats = 7.1537 bits/token  lr 3.000e-03  scale 1.0000
+04:15:16 coach: forced scale 0.5000 written
+04:15:16 sample 0 prompt 1: hit5 0.000  big 0.000  rep4 0.000  words 0 | 
+04:15:16 sample 0 prompt 2: hit5 0.000  big 0.000  rep4 0.000  words 0 | 
+04:15:19 report chunk 50  loss 7.3286 nats = 10.5729 bits/token  lr 1.500e-03  scale 0.5000
+04:15:22 report chunk 100  loss 5.5149 nats = 7.9563 bits/token  lr 1.500e-03  scale 0.5000
+04:15:22 sample 1 prompt 1: hit5 0.000  big 0.000  rep4 0.000  words 1 |  TimOKOKOKOKOKOKOKOKOKOKOKOKOKOKOKOKOKOKOKOKOKOKOKOKOKOKOKOKOKOKOKOKOKOKOKOKOKOKOKOKOKOKOKOKOKOKOKOKOKOKOKOKOKOKOKOKOKOKOKOKOKOKOK
+04:15:22 sample 1 prompt 2: hit5 0.000  big 0.000  rep4 0.786  words 17 | OK beautifulOKOKOK beautifulOKOKOK beautifulOKOKOK beautifulOKOKOK beautifulOKOKOK beautifulOKOKOK beautifulOKOKOK beautifulOKOKOK beautifulOKOKOK beautifulOKOKOK beautifulOKOKOK beautifulOKOKOK beautifulOKOKOK beautifulOKOKOK beautifulOKOKOK beautifulOKOK
+04:15:26 report chunk 150  loss 5.3626 nats = 7.7366 bits/token  lr 1.500e-03  scale 0.5000
+04:15:29 report chunk 200  loss 5.4125 nats = 7.8086 bits/token  lr 1.500e-03  scale 0.5000
+04:15:29 sample 2 prompt 1: hit5 0.984  big 0.000  rep4 0.950  words 63 |  mazeOK happily those those those happily those those those happily those those those happily those those those those those those those those those those those those those those those those those those those those those those those those those those those those those those those those those those those those those those those those those those those those those those those those those
+04:15:29 sample 2 prompt 2: hit5 1.000  big 0.000  rep4 0.951  words 64 | OK happily those those those those those those those those those those those those those those those those those those those those those those those those those those those those those those those those those those those those those those those those those those those those those those those those those those those those those those those those those those those those those those
+04:15:32 report chunk 250  loss 5.1457 nats = 7.4237 bits/token  lr 1.500e-03  scale 0.5000
+04:15:32 window: mean 7.6563 bits/token, gain 0.9046 over the previous window
+04:15:35 report chunk 300  loss 5.3775 nats = 7.7581 bits/token  lr 1.500e-03  scale 0.5000
+04:15:35 sample 3 prompt 1: hit5 1.000  big 0.000  rep4 0.902  words 64 |  young those next feels sat feels feels feels feels feels feels feels sat feels feels feels feels feels feels feels sat feels feels feels feels feels feels feels feels feels sat feels feels feels feels feels feels feels feels feels sat feels feels feels feels feels feels feels feels feels sat feels feels feels feels feels feels feels feels feels feels feels sat feels
+04:15:35 sample 3 prompt 2: hit5 0.983  big 0.000  rep4 0.917  words 63 |  towards feels feels feels feels feels feels feels feels feels feels feels feelsThat feels feels feels feels feels feels feels feels feels sat feels feels feels feels feels feels feels feels feels sat feels feels feels feels feels feels feels feels feels sat feels feels feels feels feels feels feels feels feels sat feels feels feels feels feels feels feels feels feels feels
+04:15:39 report chunk 350  loss 4.9193 nats = 7.0971 bits/token  lr 1.500e-03  scale 0.5000
+04:15:39 coach: stop flag set at chunk 350 (--stop-at)

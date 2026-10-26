@@ -2,11 +2,13 @@
  * coherence: the coach's text metrics. No model output is ever used as training data; this tool only measures.
  *   coherence build LIST.txt MIN TEXT...   word list = lower-cased alphabetic words occurring >= MIN times in the TEXT files
  *   coherence score LIST.txt TEXT          metrics of one text (a generated sample or a reference passage):
+ *   coherence windows LIST.txt TEXT        the same metrics per 256-word window of a long reference text: mean, sd, p10/p50/p90
+ *                                          of hit5, big and rep4 (the human band the coach compares samples against)
  *       words         alphabetic words in the text
  *       hit           share of them present in the list (vocabulary coherence; the list comes from the human corpus)
  *       hit5          the same over words of 5 or more letters (function words no longer carry the score)
  *       big           share of adjacent word pairs that occur in the corpus (the list stores pairs as "a_b", count >= 2)
- *       rep4          share of word 4-grams that already occurred earlier in the text (looping)
+ *       rep4          share of word 4-grams that already occurred earlier in the same 256-word window (looping)
  *       sent          mean words per sentence (split at . ! ?), and the share of sentences of 3..40 words
  *       wlen          mean word length in letters
  *   Prints one line: "hit 0.812  rep4 0.031  sent 11.2 (0.90 in 3..40)  wlen 4.3  words 213".
@@ -18,30 +20,17 @@
 #include <stdlib.h>
 #include <string.h>
 
-#define HBITS 22
-#define HSIZE (1u << HBITS)
-#define WMAX 48
-#define SCORE_FMT "hit %.3f  hit5 %.3f  big %.3f  rep4 %.3f  sent %.1f (%.2f in 3..40)  wlen %.1f  words %ld\n"
+#include "coherence.h"
+#define HBITS COH_HBITS
+#define HSIZE COH_HSIZE
+#define WMAX COH_WMAX
 
-typedef struct { char w[WMAX]; uint32_t n; } entry;
-static entry *tab;
+typedef coh_entry entry;
+#define tab coh_tab
 
-static uint32_t hash(const char *s)
-{
-	uint32_t h = 2166136261u;
-	for (; *s; s++) h = (h ^ (uint8_t)*s) * 16777619u;
-	return h;
-}
+#define hash coh_hash
 
-static entry *find(const char *w, int insert)
-{
-	uint32_t i = hash(w) & (HSIZE - 1);
-	for (;;) {
-		if (!tab[i].w[0]) { if (!insert) return NULL; strncpy(tab[i].w, w, WMAX - 1); return &tab[i]; }
-		if (!strcmp(tab[i].w, w)) return &tab[i];
-		i = (i + 1) & (HSIZE - 1);
-	}
-}
+#define find coh_find
 
 /* next word from a stream; returns length (0 at EOF); sets *sentence_end when the word was followed by . ! ? */
 static int next_word(FILE *f, char *w, int *sentence_end, int *was_end_before)
@@ -59,6 +48,7 @@ static int next_word(FILE *f, char *w, int *sentence_end, int *was_end_before)
 }
 
 static int cmp_entry(const void *a, const void *b) { return strcmp(((const entry *)a)->w, ((const entry *)b)->w); }
+static int cmpd(const void *a, const void *b) { const double x = *(const double *)a, y = *(const double *)b; return (x > y) - (x < y); }
 
 int main(int argc, char **argv)
 {
@@ -91,42 +81,41 @@ int main(int argc, char **argv)
 		printf("coherence build: %ld word tokens, %ld distinct, %ld kept (count >= %d) -> %s\n", total, distinct, kept, min, argv[2]);
 		return 0;
 	}
-	if (strcmp(argv[1], "score")) { fprintf(stderr, "coherence: unknown mode %s\n", argv[1]); return 2; }
-	FILE *l = fopen(argv[2], "r");
-	if (!l) { perror(argv[2]); return 1; }
-	unsigned n;
-	while (fscanf(l, "%47s %u", w, &n) == 2) { entry *e = find(w, 1); if (e) e->n = n; }
-	fclose(l);
+	const int windows = !strcmp(argv[1], "windows");
+	if (strcmp(argv[1], "score") && !windows) { fprintf(stderr, "coherence: unknown mode %s\n", argv[1]); return 2; }
+	if (coh_load(argv[2])) { perror(argv[2]); return 1; }
 	FILE *f = fopen(argv[3], "rb");
 	if (!f) { perror(argv[3]); return 1; }
-	/* 4-gram repetition over word hashes */
-	enum { G4MAX = 1 << 16 };
-	uint64_t *seen = calloc(G4MAX, sizeof *seen);
-	uint32_t hist[4] = { 0 }, nh = 0;
-	long words = 0, hits = 0, letters = 0, g4 = 0, g4rep = 0, sents = 0, sents_ok = 0, cur = 0, w5 = 0, hit5 = 0, pairs = 0, pairhit = 0;
-	char prev[WMAX] = "", pair[WMAX];
-	while (next_word(f, w, &se, &wb)) {
-		words++;
-		letters += (long)strlen(w);
-		if (find(w, 0)) hits++;
-		if (strlen(w) >= 5) { w5++; if (find(w, 0)) hit5++; }
-		if (prev[0] && strlen(prev) + strlen(w) + 2 < WMAX) { snprintf(pair, sizeof pair, "%s_%s", prev, w); pairs++; if (find(pair, 0)) pairhit++; }
-		strcpy(prev, se ? "" : w);
-		hist[nh++ & 3] = hash(w);
-		if (nh >= 4) {
-			uint64_t key = ((uint64_t)hist[0] * 1000003u) ^ ((uint64_t)hist[1] << 7) ^ ((uint64_t)hist[2] << 17) ^ ((uint64_t)hist[3] << 29);
-			if (!key) key = 1;
-			uint32_t i = (uint32_t)(key % G4MAX), found = 0;
-			for (;;) { if (!seen[i]) { seen[i] = key; break; } if (seen[i] == key) { found = 1; break; } i = (i + 1) % G4MAX; }
-			g4++;
-			g4rep += found;
-		}
-		cur++;
-		if (se) { sents++; if (cur >= 3 && cur <= 40) sents_ok++; cur = 0; }
-	}
-	if (cur) { sents++; if (cur >= 3 && cur <= 40) sents_ok++; }
+	fseek(f, 0, SEEK_END);
+	const long len = ftell(f);
+	fseek(f, 0, SEEK_SET);
+	char *text = malloc((size_t)len + 1);
+	if (!text || (long)fread(text, 1, (size_t)len, f) != len) { perror(argv[3]); return 1; }
 	fclose(f);
-	printf("hit %.3f  hit5 %.3f  big %.3f  rep4 %.3f  sent %.1f (%.2f in 3..40)  wlen %.1f  words %ld\n", words ? (double)hits / words : 0, w5 ? (double)hit5 / w5 : 0, pairs ? (double)pairhit / pairs : 0, g4 ? (double)g4rep / g4 : 0,
-	       sents ? (double)words / sents : 0, sents ? (double)sents_ok / sents : 0, words ? (double)letters / words : 0, words);
+	coh_metrics m;
+	if (!windows) { coh_score(text, (size_t)len, &m); coh_print(stdout, &m); return 0; }
+	/* windows: metrics of every 256-word window, then mean, sd and the 10th / 90th percentiles of hit5, big, rep4 */
+	const char *p = text, *end = text + len, *ws = text;
+	char w2[COH_WMAX]; int se2; long n = 0, cap = 1024;
+	double *h5 = malloc(cap * sizeof *h5), *bg = malloc(cap * sizeof *bg), *r4 = malloc(cap * sizeof *r4);
+	long cnt = 0;
+	while (coh_next(&p, end, w2, &se2)) {
+		if (++cnt == COH_G4WIN) {
+			coh_score(ws, (size_t)(p - ws), &m);
+			if (n == cap) { cap *= 2; h5 = realloc(h5, cap * sizeof *h5); bg = realloc(bg, cap * sizeof *bg); r4 = realloc(r4, cap * sizeof *r4); }
+			h5[n] = m.hit5; bg[n] = m.big; r4[n] = m.rep4; n++;
+			ws = p; cnt = 0;
+		}
+	}
+	if (!n) { fprintf(stderr, "coherence windows: text shorter than %d words\n", COH_G4WIN); return 1; }
+	const char *names[3] = { "hit5", "big", "rep4" }; double *arr[3] = { h5, bg, r4 };
+	printf("windows of %d words: %ld\n", COH_G4WIN, n);
+	for (int k = 0; k < 3; k++) {
+		double s = 0, ss = 0;
+		for (long i = 0; i < n; i++) { s += arr[k][i]; ss += arr[k][i] * arr[k][i]; }
+		qsort(arr[k], (size_t)n, sizeof(double), cmpd);
+		const double mean = s / n, var = ss / n - mean * mean;
+		printf("  %-4s mean %.3f  sd %.3f  p10 %.3f  p50 %.3f  p90 %.3f\n", names[k], mean, var > 0 ? __builtin_sqrt(var) : 0, arr[k][n / 10], arr[k][n / 2], arr[k][(long)(n * 0.9)]);
+	}
 	return 0;
 }

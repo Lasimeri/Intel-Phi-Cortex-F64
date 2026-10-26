@@ -16,3 +16,11 @@
 
 The single-thread gates (s01, s03c) ran on CPU 241 while an F32 training run occupied cores 0 to 59; their timings
 carry that contention. The cluster gates and the training runs ran on an otherwise idle card.
+
+Coach (docs/COACH.md):
+
+| file | what |
+|---|---|
+| s06c-coach-gate.log | gate A (no trajectory change with sampling) and gate B / B2 (host knobs reach the card) |
+| s06c-coach-b.log, s06c-coach-b2.log | the host coach's logs of gate B (stale-magic defect visible) and B2 (clean) |
+| s06c-coach-run1.log, s06c-coach-run1-card.log | the first coached 320k-token run, host and card sides |

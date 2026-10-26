@@ -40,3 +40,32 @@ stops, which checkpoint is kept) and measures the outcome; the gradient still co
 The model has 5,865,856 parameters and a 4,096-token byte-level BPE. Coherence is bounded by that capacity and by the
 corpus. The coach can move the loss curve, avoid the plateaus and the memorisation failure modes, and select the best
 checkpoint; it cannot add capacity. Every effect is measured against the uncoached run on the same card.
+
+## Implemented and gated (2026-10-26 04:1x)
+
+| piece | where | state |
+|---|---|---|
+| control block | `lib/cx-proto.h` CX_K_* (part + 4096..4504) | as specified above, plus CX_K_NSAMPLE and CX_K_ACK |
+| trainer hooks | `tools/cluster-gate.c` run mode, `CX_COACH=N` | publishes chunk, loss, lr at each report; every N chunks a greedy 64-token continuation of two fixed prompts (`/tmp/cortex/prompt1.u16`, `prompt2.u16`, or CX_KPROMPT1/2) with the fast-weight state and the bus row saved and restored around it; reads scale and flags once per chunk behind one extra barrier; clears the magic at run end |
+| host coach | `host/coach.c` | decodes samples with the BPE vocabulary, scores them with `tools/coherence.h` against a word and bigram list, logs, applies the policy; `--force-scale` and `--stop-at` are test knobs |
+| metrics | `tools/coherence.c`, `tools/coherence.h` | `build`, `score`, `windows` (the human per-window band) |
+
+Gates on the 7120A (`results/s06c-coach-gate.log`, `results/s06c-coach-b2.log`):
+
+- A, no trajectory change: 200 chunks with sampling every 50 chunks against 200 chunks without: 0 of 200 per-chunk
+  losses differ, validation identical (7.8758 bits/token). A sample costs about 0.13 s (two prompts, 64 tokens each).
+- B, knobs: the coach goes live at chunk 0; the first report shows the unscaled rate 3.00e-3; a forced scale 0.5
+  written after it shows as 1.50e-3 from the next report on; the stop flag set after the chunk-350 report ends the
+  run at chunk 351 with the validation pass and the checkpoint still written; the coach exits when the card clears
+  the block.
+- A defect found by B and fixed: the card did not clear the magic at run end, so a coach started between runs read
+  the previous run's block as live and acted at chunk 0. The card now clears magic and chunk; the coach counts a
+  report only when the chunk number increases from a non-zero base.
+
+Reference bands from the human text (`coherence windows`, 256-word windows): TinyStories validation (17,336 windows)
+hit5 1.000, big 0.995 (p10 0.986), rep4 0.022 (p90 0.036); chat validation (224 windows) hit5 0.889 (p10 0.775),
+big 0.594 (p10 0.434), rep4 0.027 (p90 0.055). The early model (100 to 300 chunks) loops on real words, which hit5
+does not see (1.000) and rep4 does (0.90 to 0.97): both metrics are needed.
+
+First coached run: `results/s06c-coach-run1.log` (host) and `results/s06c-coach-run1-card.log` (card), 320k tokens,
+to be compared with the uncoached F64 run's validation loss of 6.2813 bits/token on the same tokens.

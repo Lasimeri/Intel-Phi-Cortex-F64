@@ -1,0 +1,39 @@
+=== A: 200 chunks, no coach
+valid: 3200 tokens, loss 5.4591 nats = 7.8758 bits/token = 1.9883 bits/byte (3.961 B/token); train 12.9 s, valid 2.8 s
+=== B: 200 chunks, CX_COACH=50 (greedy samples at 50, 100, 150; no host coach)
+coach: control block at part 1344 MiB + 4096, greedy samples of 11 + 8 prompt tokens every 50 chunks
+valid: 3200 tokens, loss 5.4591 nats = 7.8758 bits/token = 1.9883 bits/byte (3.961 B/token); train 13.2 s, valid 2.8 s
+=== per-chunk losses A vs B: differing lines:
+0
+      200 k0/loss.txt
+      200 k1/loss.txt
+=== B timing lines around the samples:
+chunk     49  tokens      1568  loss 4.6593 nats = 6.7219 bits/token  lr 2.94e-03  496 tok/s  (us/step: fwd+vote+head 908, bwd+grads+adam 1105)
+chunk     50  tokens      1600  loss 5.9253 nats = 8.5484 bits/token  lr 3.00e-03  500 tok/s  (us/step: fwd+vote+head 892, bwd+grads+adam 1103)
+chunk     51  tokens      1632  loss 4.9515 nats = 7.1435 bits/token  lr 3.00e-03  159 tok/s  (us/step: fwd+vote+head 878, bwd+grads+adam 1105)
+chunk    100  tokens      3200  loss 4.9905 nats = 7.1997 bits/token  lr 3.00e-03  501 tok/s  (us/step: fwd+vote+head 891, bwd+grads+adam 1101)
+chunk    101  tokens      3232  loss 3.7274 nats = 5.3775 bits/token  lr 3.00e-03  162 tok/s  (us/step: fwd+vote+head 878, bwd+grads+adam 1093)
+=== gate B: 400 chunks, EVERY 50, CX_COACH=100, host coach forcing scale 0.5 at the first report and stop at >= 320
+coach: control block at part 1344 MiB + 4096, greedy samples of 11 + 8 prompt tokens every 100 chunks
+chunk     50  tokens      1600  loss 7.3286 nats = 10.5729 bits/token  lr 1.50e-03  500 tok/s  (us/step: fwd+vote+head 881, bwd+grads+adam 1117)
+chunk    100  tokens      3200  loss 5.5149 nats = 7.9563 bits/token  lr 1.50e-03  500 tok/s  (us/step: fwd+vote+head 879, bwd+grads+adam 1118)
+chunk    150  tokens      4800  loss 5.3626 nats = 7.7366 bits/token  lr 1.50e-03  480 tok/s  (us/step: fwd+vote+head 880, bwd+grads+adam 1119)
+chunk    200  tokens      6400  loss 5.4125 nats = 7.8086 bits/token  lr 1.50e-03  500 tok/s  (us/step: fwd+vote+head 879, bwd+grads+adam 1118)
+chunk    250  tokens      8000  loss 5.1457 nats = 7.4237 bits/token  lr 1.50e-03  479 tok/s  (us/step: fwd+vote+head 882, bwd+grads+adam 1119)
+chunk    300  tokens      9600  loss 5.3775 nats = 7.7581 bits/token  lr 1.50e-03  501 tok/s  (us/step: fwd+vote+head 879, bwd+grads+adam 1118)
+chunk    350  tokens     11200  loss 4.9193 nats = 7.0971 bits/token  lr 1.50e-03  480 tok/s  (us/step: fwd+vote+head 881, bwd+grads+adam 1118)
+coach: stop at chunk 351
+valid: 3200 tokens, loss 5.1186 nats = 7.3846 bits/token = 1.8643 bits/byte (3.961 B/token); train 22.9 s, valid 2.8 s
+checkpoint /tmp/cortex64/s4/k2/ckpt.bin: 46926848 bytes
+=== gate B2: 400 chunks, EVERY 50, CX_COACH=100, fresh coach (force scale 0.5 at the first report, stop at >= 320)
+coach: control block at part 1344 MiB + 4096, greedy samples of 11 + 8 prompt tokens every 100 chunks
+chunk     50  tokens      1600  loss 6.9290 nats = 9.9965 bits/token  lr 3.00e-03  501 tok/s  (us/step: fwd+vote+head 888, bwd+grads+adam 1108)
+chunk    100  tokens      3200  loss 5.4650 nats = 7.8843 bits/token  lr 1.50e-03  500 tok/s  (us/step: fwd+vote+head 888, bwd+grads+adam 1111)
+chunk    150  tokens      4800  loss 5.3376 nats = 7.7005 bits/token  lr 1.50e-03  480 tok/s  (us/step: fwd+vote+head 888, bwd+grads+adam 1111)
+chunk    200  tokens      6400  loss 5.3898 nats = 7.7758 bits/token  lr 1.50e-03  500 tok/s  (us/step: fwd+vote+head 889, bwd+grads+adam 1110)
+chunk    250  tokens      8000  loss 5.1166 nats = 7.3817 bits/token  lr 1.50e-03  480 tok/s  (us/step: fwd+vote+head 890, bwd+grads+adam 1108)
+chunk    300  tokens      9600  loss 5.3871 nats = 7.7720 bits/token  lr 1.50e-03  500 tok/s  (us/step: fwd+vote+head 887, bwd+grads+adam 1112)
+chunk    350  tokens     11200  loss 4.9336 nats = 7.1177 bits/token  lr 1.50e-03  480 tok/s  (us/step: fwd+vote+head 890, bwd+grads+adam 1109)
+coach: stop at chunk 351
+valid: 3200 tokens, loss 5.0911 nats = 7.3449 bits/token = 1.8543 bits/byte (3.961 B/token); train 22.9 s, valid 2.8 s
+checkpoint /tmp/cortex64/s4/k2/ckpt.bin: 46926848 bytes
