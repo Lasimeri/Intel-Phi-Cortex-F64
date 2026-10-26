@@ -127,24 +127,37 @@ static int load_ckpt(void)
 static volatile uint32_t ctl_op, ctl_arg, ctl_quit, ctl_exit;
 static int step_t;   /* the step slot within the chunk buffers (0..L-1); the bus wraps with the chunk */
 
+/* A session with no first command within this many seconds is abandoned: a client that wrote its session while no
+ * daemon was alive leaves CX_H_SESSION dangling, and without the grace period the next daemon would take that session
+ * and wait forever for a client that is gone (2026-10-26). */
+#define CX_SESSION_GRACE_S 5.0
+
 static void serve(void *arg, int k)
 {
 	(void)arg;
-	uint64_t done = 0;
+	uint64_t done = 0, first = 0;
+	double t0 = 0;
 	if (!k) {
-		done = CX_CMD_SEQ(rd64(CX_H_CMD));
+		done = first = CX_CMD_SEQ(rd64(CX_H_CMD));
 		wr64(CX_C_ACK, done);
 		cx_fence();
 		wr64(CX_C_SESSION, rd64(CX_H_SESSION));
 		wr32(CX_C_STATE, 1);
+		t0 = cx_now();
 	}
 	for (;;) {
 		/* thread 0 waits for a command and publishes it; everyone else waits at the barrier */
 		if (!k) {
-			for (;;) {
+			for (uint32_t spins = 0;; spins++) {
 				const uint64_t c = rd64(CX_H_CMD), seq = CX_CMD_SEQ(c);
 				if (seq == CX_CMD_QUIT) { ctl_quit = 1; break; }
 				if (seq != done) { ctl_op = rd32(CX_H_CMD_OP); ctl_arg = CX_CMD_ARG(c); done = seq; break; }
+				if (done == first && (spins & 4095) == 0 && cx_now() - t0 > CX_SESSION_GRACE_S) {
+					printf("cortexd: no command within %.0f s, session abandoned\n", CX_SESSION_GRACE_S);
+					fflush(stdout);
+					ctl_quit = 1;
+					break;
+				}
 				__asm__ volatile("delay %0" : : "r"(16u));
 			}
 		}
