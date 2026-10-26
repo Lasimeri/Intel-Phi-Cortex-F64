@@ -24,3 +24,5 @@ Coach (docs/COACH.md):
 | s06c-coach-gate.log | gate A (no trajectory change with sampling) and gate B / B2 (host knobs reach the card) |
 | s06c-coach-b.log, s06c-coach-b2.log | the host coach's logs of gate B (stale-magic defect visible) and B2 (clean) |
 | s06c-coach-run1.log, s06c-coach-run1-card.log | the first coached 320k-token run, host and card sides |
+| s06c-control-160k.log | uncoached F64 run stopped at 160k tokens: the equal-token control for coached run 1 |
+| s06c-coach-run2.log, s06c-coach-run2-card.log | coached run 2 (policy v2) over the full 320k budget |

@@ -69,3 +69,28 @@ does not see (1.000) and rep4 does (0.90 to 0.97): both metrics are needed.
 
 First coached run: `results/s06c-coach-run1.log` (host) and `results/s06c-coach-run1-card.log` (card), 320k tokens,
 to be compared with the uncoached F64 run's validation loss of 6.2813 bits/token on the same tokens.
+
+## Coached run 1 and the policy correction (04:2x)
+
+320k-token budget, same tokens and seed as the uncoached F64 run, policy v1 (`results/s06c-coach-run1.log`,
+`results/s06c-coach-run1-card.log`):
+
+| event | chunk | cause |
+|---|---|---|
+| halving 1, scale 0.5 | about 1,500 | three greedy samples with rep4 above the human band 0.036 |
+| halving 2, scale 0.25 | about 3,500 | the same rule |
+| halving 3, scale 0.125 | about 4,500 | the same rule |
+| stop | 5,001 | window gain -0.04 bits/token after the three halvings |
+
+Validation at the stop, 160k tokens: 4.2946 nats = 6.1959 bits/token, against 6.2813 for the uncoached run at 320k.
+The per-report losses of the two logs are not comparable (500-chunk means against 100-chunk means); the validation
+pass on the same 100,000 tokens is.
+
+What the log shows about the rules: greedy decoding of this model loops at every stage (rep4 0.74 to 0.97 from the
+first sample to the last), so an absolute threshold taken from human text fires on every sample and decays the rate
+for the wrong reason; the stop then followed the coach's own decay. The gain over the uncoached run is consistent with
+learning-rate decay as such, not with the coach having detected anything. Policy v2 therefore takes rate decisions
+from the loss windows only, uses the samples as a trend signal (a sample whose rep4 exceeds the mean of the previous
+three by more than 0.1, once per run), and stops only at the floor after two consecutive windows with a rising loss.
+The control for the number above is an uncoached run stopped at the same 160k tokens
+(`results/s06c-control-160k.log`); the coached v2 run over the full 320k budget follows.

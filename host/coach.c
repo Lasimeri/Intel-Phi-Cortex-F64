@@ -5,10 +5,12 @@
  *
  *   coach LIST.txt VOCAB.txt LOG.txt [--window W] [--min-gain BITS] [--rep4 R] [--halvings H] [--force-scale X] [--stop-at N]
  *
- * Policy (rule based): every W reports (default 10) the mean training loss of the window is compared with the previous
- * window; a gain below BITS bits/token (default 0.01) is a plateau; a plateau halves the scale; after H halvings
- * (default 3) the next plateau sets the stop flag. Three consecutive samples with rep4 above R (default 0.036, the p90
- * of human TinyStories windows) count as one plateau. --force-scale and --stop-at are test knobs.
+ * Policy v2 (rule based): every W reports (default 10) the mean training loss of the window is compared with the previous
+ * window; a gain below BITS bits/token (default 0.01) is a plateau; a plateau halves the scale down to 2^-H (H default 3);
+ * at the floor, two consecutive windows with a NEGATIVE gain set the stop flag. The greedy samples are a trend signal:
+ * a sample whose rep4 exceeds the mean of the previous three by more than R (default 0.1) counts as one plateau, at
+ * most once per run (v1 used the human band 0.036 as an absolute threshold; greedy decoding of this model loops at every
+ * stage, so that rule decayed the rate for the wrong reason). --force-scale and --stop-at are test knobs.
  */
 #define BPE_NO_MAIN
 #include <stdarg.h>
@@ -51,7 +53,8 @@ static void logf2(const char *fmt, ...)
 int main(int argc, char **argv)
 {
 	if (argc < 4) { fprintf(stderr, "usage: coach LIST.txt VOCAB.txt LOG.txt [--window W] [--min-gain BITS] [--rep4 R] [--halvings H] [--force-scale X] [--stop-at N]\n"); return 2; }
-	int window = 10, max_halvings = 3; double min_gain = 0.01, rep4_band = 0.036, force_scale = 0; long stop_at = 0;
+	int window = 10, max_halvings = 3; double min_gain = 0.01, rep4_band = 0.1, force_scale = 0; long stop_at = 0;
+	int rising_used = 0, neg_windows = 0; double rep_hist[3] = { 0, 0, 0 }; int rep_n = 0;
 	for (int i = 4; i < argc; i++) {
 		if (!strcmp(argv[i], "--window") && i + 1 < argc) window = atoi(argv[++i]);
 		else if (!strcmp(argv[i], "--min-gain") && i + 1 < argc) min_gain = atof(argv[++i]);
@@ -71,9 +74,9 @@ int main(int argc, char **argv)
 	if (fd < 0) { perror("/dev/shm/phi-hostmem"); return 1; }
 	part = mmap(NULL, CX_PART_SIZE, PROT_READ | PROT_WRITE, MAP_SHARED, fd, (off_t)CX_PART_MIB << 20);
 	if (part == MAP_FAILED) { perror("mmap"); return 1; }
-	logf2("coach: list %s, vocab %s, window %d reports, min gain %.3f bits/token, rep4 band %.3f, max halvings %d%s", argv[1], argv[2], window, min_gain, rep4_band, max_halvings, force_scale > 0 ? " (forced scale)" : "");
+	logf2("coach: policy v2; list %s, vocab %s, window %d reports, min gain %.3f bits/token, rep4 rise %.3f, max halvings %d%s", argv[1], argv[2], window, min_gain, rep4_band, max_halvings, force_scale > 0 ? " (forced scale)" : "");
 
-	int live = 0, halvings = 0, rep_streak = 0, forced = 0;
+	int live = 0, halvings = 0, forced = 0;
 	uint64_t last_chunk = 0, last_seq = 0;
 	double scale = 1.0, win_sum = 0, prev_mean = 0; int win_n = 0, have_prev = 0;
 	for (;;) {
@@ -94,8 +97,9 @@ int main(int argc, char **argv)
 				if (have_prev) {
 					const double gain = (prev_mean - mean) / CX_LN2;
 					logf2("window: mean %.4f bits/token, gain %.4f over the previous window", mean / CX_LN2, gain);
+					neg_windows = gain < 0 ? neg_windows + 1 : 0;
 					if (gain < min_gain) {
-						if (halvings >= max_halvings) { ST64(CX_K_FLAGS, LD64(CX_K_FLAGS) | 2); logf2("coach: plateau after %d halvings -> stop flag", halvings); }
+						if (halvings >= max_halvings) { if (neg_windows >= 2) { ST64(CX_K_FLAGS, LD64(CX_K_FLAGS) | 2); logf2("coach: at the floor and the loss rose for two windows -> stop flag"); } else logf2("coach: plateau at the floor (scale %.4f), continuing", scale); }
 						else { scale *= 0.5; halvings++; ST64(CX_K_SCALE, kbits(scale)); ST64(CX_K_FLAGS, LD64(CX_K_FLAGS) | 1); logf2("coach: plateau -> scale %.4f (halving %d), checkpoint requested", scale, halvings); }
 					}
 				}
@@ -120,11 +124,12 @@ int main(int argc, char **argv)
 				coh_score(text, len, &m);
 				logf2("sample %lu prompt %d: hit5 %.3f  big %.3f  rep4 %.3f  words %ld | %s", (unsigned long)seq, p + 1, m.hit5, m.big, m.rep4, m.words, text);
 				if (p == 0) {
-					rep_streak = m.rep4 > rep4_band ? rep_streak + 1 : 0;
-					if (rep_streak == 3) {
-						rep_streak = 0;
-						if (halvings < max_halvings) { scale *= 0.5; halvings++; ST64(CX_K_SCALE, kbits(scale)); logf2("coach: three samples with rep4 > %.3f -> scale %.4f (halving %d)", rep4_band, scale, halvings); }
+					const double prev = rep_n >= 3 ? (rep_hist[0] + rep_hist[1] + rep_hist[2]) / 3 : -1;
+					if (prev >= 0 && m.rep4 > prev + rep4_band && !rising_used && halvings < max_halvings) {
+						rising_used = 1; scale *= 0.5; halvings++; ST64(CX_K_SCALE, kbits(scale));
+						logf2("coach: rep4 %.3f rose above the previous three (mean %.3f) by more than %.2f -> scale %.4f (halving %d)", m.rep4, prev, rep4_band, scale, halvings);
 					}
+					rep_hist[rep_n % 3] = m.rep4; rep_n++;
 				}
 			}
 		}
