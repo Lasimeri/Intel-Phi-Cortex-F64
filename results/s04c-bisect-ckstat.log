@@ -1,0 +1,13 @@
+columns with non-finite values: 0 of 120
+  P_in  max |v| 0.3201   non-finite 0
+  Wqb   max |v| 0.125   non-finite 0
+  gain  max |v| 1.184   non-finite 0
+  W     max |v| 0.3459   non-finite 0
+  W1    max |v| 0.3777   non-finite 0
+  b1    max |v| 0.1953   non-finite 0
+  Wu    max |v| 0.441   non-finite 0
+  wg    max |v| 0.3403   non-finite 0
+  bg    max |v| 0.3112   non-finite 0
+  Wb    max |v| 0.1249   non-finite 0
+cg: max |v| 1.047  non-finite 0
+E: max |v| 1.038  non-finite 0 in 0 rows

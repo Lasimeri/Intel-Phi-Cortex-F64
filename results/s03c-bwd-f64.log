@@ -1,0 +1,17 @@
+train-gate bwd: cpu 241, L 16, warm 16; us per step: warm-up fwd 326.63, chunk fwd 284.78, head logits 591.22, softmax+loss 79.70; mean loss 8.445217 nats
+train-gate bwd: us per step: head dhc 1431.78, column bwd 332.67, param grads 51.26, head dE 531.37, input rows 11.41; total train step 3314.18
+rc=0
+data/bpe/valid.u16: No such file or directory
+train-check bwd: L 16 warm 16: mean loss ref 8.445217 card 8.445217; max |loss err| 5.329e-15; dl max abs err 1.003e-18 (rel 1.605e-17); hc max abs err 2.220e-15 (rel 6.642e-16)
+gradients (card F32 vs host double):
+  dhc    n    2048  max |ref| 6.7611e-03  max abs err 4.684e-17  rel 6.927e-15  (at 589: card 5.657449e-03 ref 5.657449e-03)
+  P_in   n    8192  max |ref| 1.2745e-01  max abs err 3.955e-16  rel 3.103e-15  (at 2802: card 3.537455e-02 ref 3.537455e-02)
+  Wqb    n    1024  max |ref| 2.3991e-02  max abs err 6.180e-17  rel 2.576e-15  (at 916: card 1.488414e-03 ref 1.488414e-03)
+  gain   n      80  max |ref| 5.9696e-02  max abs err 1.596e-16  rel 2.673e-15  (at 65: card -2.308287e-02 ref -2.308287e-02)
+  W      n   16640  max |ref| 6.3794e-02  max abs err 1.518e-16  rel 2.379e-15  (at 16355: card -3.959920e-03 ref -3.959920e-03)
+  W1     n    9216  max |ref| 3.4867e-01  max abs err 7.910e-16  rel 2.269e-15  (at 8661: card 7.467783e-02 ref 7.467783e-02)
+  b1     n      64  max |ref| 1.2531e-01  max abs err 2.914e-16  rel 2.326e-15  (at 13: card -3.428102e-02 ref -3.428102e-02)
+  Wu     n    8192  max |ref| 1.0841e-01  max abs err 4.129e-16  rel 3.808e-15  (at 4776: card -9.037072e-03 ref -9.037072e-03)
+  cg     n     128  max |ref| 4.4761e-02  max abs err 1.249e-16  rel 2.790e-15  (at 41: card -2.338076e-02 ref -2.338076e-02)
+  E      n  524288  max |ref| 2.7604e-01  max abs err 4.857e-16  rel 1.760e-15  (at 49885: card -2.720212e-02 ref -2.720212e-02)
+  E rows used as inputs: max abs err 4.857e-16

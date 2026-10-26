@@ -1,0 +1,27 @@
+# build outputs (rebuild with ./build.sh)
+build/
+# the corpus and the token shards (fetch + encode: see results/s02-bpe.md); keep the vocabulary and the prompts
+data/tinystories/
+data/bpe/*.u16
+!data/bpe/prompt*.u16
+# raw gate dumps and timing data (the results/*.md files summarise them)
+data/bar/
+data/bar2/
+data/isa/
+data/l2*/
+data/mbox/
+data/col/
+data/s3/*.f32
+data/s3/run1/
+data/s3b/
+data/s4/*.f32
+data/s4e/
+data/cortex-last.u16
+# the F64 checkpoint of the 320k-token run stays in (data/run/ckpt.bin, 46,926,848 B)
+*.new
+*.o
+# F64 gate dumps and transfer archives
+data/s4/f/
+data/s4/b/
+data/s4/*.tar
+data/isa/

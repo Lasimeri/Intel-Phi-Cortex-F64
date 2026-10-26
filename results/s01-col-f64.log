@@ -1,0 +1,7 @@
+  step 0 intermediates, max rel err: p 5.68e-16 qb 2.85e-16 alpha 5.68e-16 x 4.90e-16 y 8.92e-16 k 8.33e-16 o 2.45e-15 h 5.30e-16 z 4.09e-16
+thread   0, 2000 steps: max abs err / max err rel to the vector's max |ref|
+  u (128)   6.106e-16  1.775e-15
+  bc (16)   6.106e-16  2.775e-15
+  g         2.220e-16  4.715e-16
+  T final   1.665e-16  9.757e-16
+  reference ranges: |u| max 0.6006, g 0.3775..0.6021, a max 0.8869, b max 0.9297, alpha max 0.0106

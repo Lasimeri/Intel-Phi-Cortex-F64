@@ -1,0 +1,76 @@
+=== bisect: 600 chunks, EVERY 1, ckpt every 50, CX_BUS=0
+cluster-gate run: 120 columns, L 32, warm 0, pin failures 0, thread 0 cpu 1, thread 119 cpu 240
+run: 19201 tokens = 600 chunks of 32, lr 0.003 (warm-up 50 chunks), b1 0.9 b2 0.95, bus off, valid 3201 tokens
+chunk     23  tokens       736  loss 7.8212 nats = 11.2836 bits/token  lr 1.38e-03  501 tok/s  (us/step: fwd+vote+head 878, bwd+grads+adam 1116)
+chunk     48  tokens      1536  loss 6.6121 nats = 9.5392 bits/token  lr 2.88e-03  491 tok/s  (us/step: fwd+vote+head 893, bwd+grads+adam 1141)
+checkpoint /tmp/cortex64/s4/run3/ckpt-50.bin
+chunk     72  tokens      2304  loss 7.0185 nats = 10.1255 bits/token  lr 3.00e-03  503 tok/s  (us/step: fwd+vote+head 878, bwd+grads+adam 1107)
+chunk     97  tokens      3104  loss 4.5678 nats = 6.5899 bits/token  lr 3.00e-03  504 tok/s  (us/step: fwd+vote+head 882, bwd+grads+adam 1100)
+checkpoint /tmp/cortex64/s4/run3/ckpt-100.bin
+chunk    121  tokens      3872  loss 5.9713 nats = 8.6148 bits/token  lr 3.00e-03  503 tok/s  (us/step: fwd+vote+head 878, bwd+grads+adam 1105)
+chunk    146  tokens      4672  loss 4.5990 nats = 6.6349 bits/token  lr 3.00e-03  500 tok/s  (us/step: fwd+vote+head 878, bwd+grads+adam 1120)
+checkpoint /tmp/cortex64/s4/run3/ckpt-150.bin
+chunk    170  tokens      5440  loss 6.1300 nats = 8.8438 bits/token  lr 3.00e-03  479 tok/s  (us/step: fwd+vote+head 979, bwd+grads+adam 1103)
+chunk    195  tokens      6240  loss 5.8639 nats = 8.4598 bits/token  lr 3.00e-03  502 tok/s  (us/step: fwd+vote+head 879, bwd+grads+adam 1108)
+checkpoint /tmp/cortex64/s4/run3/ckpt-200.bin
+chunk    219  tokens      7008  loss 4.5622 nats = 6.5819 bits/token  lr 3.00e-03  502 tok/s  (us/step: fwd+vote+head 883, bwd+grads+adam 1107)
+chunk    244  tokens      7808  loss 6.0154 nats = 8.6783 bits/token  lr 3.00e-03  499 tok/s  (us/step: fwd+vote+head 881, bwd+grads+adam 1120)
+checkpoint /tmp/cortex64/s4/run3/ckpt-250.bin
+chunk    268  tokens      8576  loss 5.6051 nats = 8.0865 bits/token  lr 3.00e-03  501 tok/s  (us/step: fwd+vote+head 881, bwd+grads+adam 1111)
+chunk    293  tokens      9376  loss 6.2332 nats = 8.9926 bits/token  lr 3.00e-03  502 tok/s  (us/step: fwd+vote+head 880, bwd+grads+adam 1108)
+checkpoint /tmp/cortex64/s4/run3/ckpt-300.bin
+chunk    317  tokens     10144  loss 5.6713 nats = 8.1819 bits/token  lr 3.00e-03  501 tok/s  (us/step: fwd+vote+head 879, bwd+grads+adam 1113)
+chunk    342  tokens     10944  loss 4.9793 nats = 7.1836 bits/token  lr 3.00e-03  504 tok/s  (us/step: fwd+vote+head 877, bwd+grads+adam 1101)
+checkpoint /tmp/cortex64/s4/run3/ckpt-350.bin
+chunk    366  tokens     11712  loss 5.5192 nats = 7.9625 bits/token  lr 3.00e-03  503 tok/s  (us/step: fwd+vote+head 874, bwd+grads+adam 1109)
+chunk    391  tokens     12512  loss 4.3036 nats = 6.2087 bits/token  lr 3.00e-03  499 tok/s  (us/step: fwd+vote+head 881, bwd+grads+adam 1115)
+checkpoint /tmp/cortex64/s4/run3/ckpt-400.bin
+chunk    415  tokens     13280  loss 5.2468 nats = 7.5696 bits/token  lr 3.00e-03  503 tok/s  (us/step: fwd+vote+head 878, bwd+grads+adam 1105)
+chunk    440  tokens     14080  loss 5.1536 nats = 7.4351 bits/token  lr 3.00e-03  502 tok/s  (us/step: fwd+vote+head 877, bwd+grads+adam 1111)
+FIRST NAN:
+chunk    449  tokens     14368  loss -nan nats = -nan bits/token  lr 3.00e-03  493 tok/s  (us/step: fwd+vote+head 880, bwd+grads+adam 1145)
+checkpoint /tmp/cortex64/s4/run3/ckpt-450.bin
+chunk    464  tokens     14848  loss -nan nats = -nan bits/token  lr 3.00e-03  496 tok/s  (us/step: fwd+vote+head 882, bwd+grads+adam 1130)
+chunk    489  tokens     15648  loss -nan nats = -nan bits/token  lr 3.00e-03  495 tok/s  (us/step: fwd+vote+head 879, bwd+grads+adam 1137)
+checkpoint /tmp/cortex64/s4/run3/ckpt-500.bin
+chunk    513  tokens     16416  loss -nan nats = -nan bits/token  lr 3.00e-03  493 tok/s  (us/step: fwd+vote+head 879, bwd+grads+adam 1146)
+chunk    538  tokens     17216  loss -nan nats = -nan bits/token  lr 3.00e-03  496 tok/s  (us/step: fwd+vote+head 883, bwd+grads+adam 1131)
+checkpoint /tmp/cortex64/s4/run3/ckpt-550.bin
+chunk    562  tokens     17984  loss -nan nats = -nan bits/token  lr 3.00e-03  496 tok/s  (us/step: fwd+vote+head 879, bwd+grads+adam 1132)
+chunk    587  tokens     18784  loss -nan nats = -nan bits/token  lr 3.00e-03  496 tok/s  (us/step: fwd+vote+head 880, bwd+grads+adam 1131)
+valid: 3200 tokens, loss -nan nats = -nan bits/token = -nan bits/byte (3.961 B/token); train 39.2 s, valid 2.8 s
+checkpoint /tmp/cortex64/s4/run3/ckpt.bin: 46926848 bytes
+LAST:
+chunk    600  tokens     19200  loss -nan nats = -nan bits/token  lr 3.00e-03  497 tok/s  (us/step: fwd+vote+head 880, bwd+grads+adam 1127)
+ckpt-100.bin
+ckpt-150.bin
+ckpt-200.bin
+ckpt-250.bin
+ckpt-300.bin
+ckpt-350.bin
+ckpt-400.bin
+ckpt-450.bin
+ckpt-50.bin
+ckpt-500.bin
+ckpt-550.bin
+ckpt.bin
+=== bisect 2 (rcp/rsqrt inf guards, 8-byte ckpt): 600 chunks, EVERY 1, ckpt every 50, CX_BUS=0
+cluster-gate run: 120 columns, L 32, warm 0, pin failures 0, thread 0 cpu 1, thread 119 cpu 240
+run: 19201 tokens = 600 chunks of 32, lr 0.003 (warm-up 50 chunks), b1 0.9 b2 0.95, bus off, valid 3201 tokens
+chunk     50  tokens      1600  loss 5.9253 nats = 8.5484 bits/token  lr 3.00e-03  493 tok/s  (us/step: fwd+vote+head 881, bwd+grads+adam 1125)
+chunk    100  tokens      3200  loss 4.9905 nats = 7.1997 bits/token  lr 3.00e-03  495 tok/s  (us/step: fwd+vote+head 884, bwd+grads+adam 1116)
+chunk    150  tokens      4800  loss 5.9046 nats = 8.5186 bits/token  lr 3.00e-03  493 tok/s  (us/step: fwd+vote+head 886, bwd+grads+adam 1119)
+chunk    200  tokens      6400  loss 4.9585 nats = 7.1537 bits/token  lr 3.00e-03  493 tok/s  (us/step: fwd+vote+head 881, bwd+grads+adam 1126)
+chunk    250  tokens      8000  loss 5.2082 nats = 7.5139 bits/token  lr 3.00e-03  495 tok/s  (us/step: fwd+vote+head 883, bwd+grads+adam 1114)
+chunk    300  tokens      9600  loss 4.6151 nats = 6.6582 bits/token  lr 3.00e-03  491 tok/s  (us/step: fwd+vote+head 880, bwd+grads+adam 1131)
+chunk    350  tokens     11200  loss 3.4805 nats = 5.0214 bits/token  lr 3.00e-03  492 tok/s  (us/step: fwd+vote+head 879, bwd+grads+adam 1132)
+chunk    400  tokens     12800  loss 5.1104 nats = 7.3728 bits/token  lr 3.00e-03  493 tok/s  (us/step: fwd+vote+head 882, bwd+grads+adam 1126)
+chunk    450  tokens     14400  loss 5.4651 nats = 7.8844 bits/token  lr 3.00e-03  492 tok/s  (us/step: fwd+vote+head 881, bwd+grads+adam 1128)
+chunk    500  tokens     16000  loss 4.2690 nats = 6.1588 bits/token  lr 3.00e-03  495 tok/s  (us/step: fwd+vote+head 883, bwd+grads+adam 1120)
+chunk    550  tokens     17600  loss 3.1056 nats = 4.4804 bits/token  lr 3.00e-03  480 tok/s  (us/step: fwd+vote+head 880, bwd+grads+adam 1184)
+chunk    600  tokens     19200  loss 5.8813 nats = 8.4849 bits/token  lr 3.00e-03  500 tok/s  (us/step: fwd+vote+head 879, bwd+grads+adam 1118)
+valid: 3200 tokens, loss 5.0976 nats = 7.3543 bits/token = 1.8567 bits/byte (3.961 B/token); train 40.0 s, valid 2.8 s
+LAST:
+chunk    600  tokens     19200  loss 5.8813 nats = 8.4849 bits/token  lr 3.00e-03  500 tok/s  (us/step: fwd+vote+head 879, bwd+grads+adam 1118)
+-rw-r--r--    1 root     root      46926848 Oct 26 08:36 run3/ckpt-450.bin
+-rw-r--r--    1 root     root      46926848 Oct 26 08:36 run3/ckpt.bin

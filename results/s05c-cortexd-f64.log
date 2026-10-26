@@ -1,0 +1,16 @@
+cortexd: 120 columns, part 1344 MiB, DMA channel 2 (region 0x8100000000, 2048 MiB); waiting for a session
+cortexd: session 19036984096792 ended; waiting for the next
+cortexd: session 19037157721464 ended; waiting for the next
+cortexd: session 19037347090777 ended; waiting for the next
+cortexd: session 19037532182703 ended; waiting for the next
+cortexd: session 19037667838263 ended, exiting
+cortexd: 120 columns, part 1344 MiB, DMA channel 2 (region 0x8100000000, 2048 MiB); waiting for a session
+cortexd: session 19102760017665 ended; waiting for the next
+cortexd: session 19102892170973 ended; waiting for the next
+cortexd: session 19103022447812 ended, exiting
+cortexd: 120 columns, part 1344 MiB, DMA channel 2 (region 0x8100000000, 2048 MiB); waiting for a session
+cortexd: session 19169594333188 ended; waiting for the next
+cortexd: session 19169733061033 ended; waiting for the next
+cortexd: session 19169867478572 ended; waiting for the next
+cortexd: session 19170000053030 ended; waiting for the next
+cortexd: session 19170128295732 ended, exiting

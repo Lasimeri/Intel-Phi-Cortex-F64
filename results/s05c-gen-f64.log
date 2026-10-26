@@ -1,0 +1,48 @@
+=== F64 cortexd + host cortex, ckpt data/run/ckpt.bin (320k tokens, bus off)
+--- Once upon a time, --greedy
+cortex: checkpoint loaded by DMA in 21.0 ms; prompt 4 tokens; greedy
+Once upon a time, inide brother, littleandy duck duck drawip believeip to moral, littleandy words pond pond pond pond pond pond pond pond pond pond pond pond pond pond pond pond pond pond pond pond pond pond pond pond pond pond pond pond pond pond pond pond pond pond pond pond pond pond pond pond pond pond pond pond pond pond pond pond pond pond pond pond pond pond pond pond pond pond pond pond pond pond pond pond pond pond pond pond pond pond pond pond pond pond pond pond pondcortex: 4 prompt + 96 generated tokens in 0.101 s: 976.1 tok/s overall; per token card 1007.7 us (mailbox + forward + DMA), host 17.3 us (sampling + print)
+
+
+--- Once upon a time, --seed 1
+cortex: checkpoint loaded by DMA in 21.1 ms; prompt 4 tokens; sampling
+Once upon a time, in shook, littleandyipipumpy app wagged sandw withoutot bench min read. big explore journ sureurtle sl de cirause butterfly remembered turtle runs. bigried t followed Bella li pink O read Bellaau feels fox butterfly sure. on?" funag feels wagadow wear suc flo walking. big cripalm lo feels cold. at disapp app, littleandy draw duck ready to moral, littleilk pond brown shr withoutotirp min wra sl waggedumberause read.cortex: 4 prompt + 96 generated tokens in 0.114 s: 869.0 tok/s overall; per token card 924.7 us (mailbox + forward + DMA), host 233.1 us (sampling + print)
+
+
+--- Once upon a time, --seed 2
+cortex: checkpoint loaded by DMA in 21.0 ms; prompt 4 tokens; sampling
+Once upon a time, in shook, littleandyipipumpy app wagged sandw withoutot bench min read. big explore journ sureurtle sl de cirause butterfly remembered turtle runs. bigried t followed Bella li pink O read Bellaau feels fox butterfly sure. on?" funag feels wagadow wear suc flo walking. big cripalm lo feels cold. at disapp app, littleandy draw duck ready to moral, littleilk pond brown shr withoutotirp min wra sl waggedumberause read.cortex: 4 prompt + 96 generated tokens in 0.114 s: 870.6 tok/s overall; per token card 923.9 us (mailbox + forward + DMA), host 231.7 us (sampling + print)
+
+
+--- The little dog, --greedy
+cortex: checkpoint loaded by DMA in 21.0 ms; prompt 3 tokens; greedy
+The little dog kids and not worry, big explore. big explore believeip believeip believeip to moral, littleandy words drawip to moral, littleandy words pond pond pond pond pond pond pond pond pond pond pond pond pond pond pond pond pond pond pond pond pond pond pond pond pond pond pond pond pond pond pond pond pond pondcortex: 3 prompt + 64 generated tokens in 0.067 s: 980.8 tok/s overall; per token card 1003.2 us (mailbox + forward + DMA), host 16.8 us (sampling + print)
+
+
+hit 0.817  rep4 0.381  sent 18.1 (0.75 in 3..40)  wlen 4.7  words 289
+=== sampler check: --temp 1.0 --minp 0 --topk 0 --topp 1.0 --rp 1.0, seeds 1 and 2
+--- seed 1
+Once upon a time, there was a big, but believeDarararararararararararararararararararararararararararararararararararararararcortex: 4 prompt + 48 generated tokens in 0.058 s: 886.1 tok/s overall; per token card 919.4 us (mailbox + forward + DMA), host 222.1 us (sampling + print)
+
+
+--- seed 2
+Once upon a time, there was a big, but believeDarararararararararararararararararararararararararararararararararararararararcortex: 4 prompt + 48 generated tokens in 0.058 s: 879.3 tok/s overall; per token card 911.8 us (mailbox + forward + DMA), host 239.5 us (sampling + print)
+
+
+--- default sampler, seeds 1 and 2, counting candidate sets would need instrumentation; the default settings on this model gave identical text (see above)
+=== sampler check 2: --topk 4096 --topp 1.0 --minp 0 --temp 1.0 --rp 1.0 (top-k 0 above meant 'keep none' -> fell back to the top token, i.e. greedy), seeds 1, 2, 3
+--- seed 1
+Once upon a time, in?" big exploreaged app taxiipisionip wrappedip builtipirpy app yoga app magazineip selip Catip Markipitalip check app cactip brilliantip doughiprage app eraser app clubip hunt app modestip savecortex: 4 prompt + 48 generated tokens in 0.061 s: 832.2 tok/s overall; per token card 
+
+
+--- seed 2
+Once upon a time, in shook, littleandy draw duck draw duck squeip wanderipAlip lovelyip strawip sugip roarip flour app spring app holdingip football app neripByeip leadip hockeyipusiaipian appparip trail appcortex: 4 prompt + 48 generated tokens in 0.059 s: 867.9 tok/s overall; per token card 918.6 
+
+
+--- seed 3
+Once upon a time, in shook, littleandy duckue duck pond draw duck changedip attract app tentip forgive appushed app crawlipubby app Myip notebook app ways app onto appguip snacks appundip anyoneip firework appventuallyip stairsipcortex: 4 prompt + 48 generated tokens in 0.059 s: 860.7 tok/s overall;
+
+
+--- default sampler, seed 3
+Once upon a time, in shook, littleandy duckipeter app wagged balls withoutot balls min read. big explore puzz slip pocket sure disappause butterfly read amazed runs. big cr t deoggy liue shraueter wag di fox butterfly remembered.cortex: 4 prompt + 48 generated tokens in 0.058 s: 886.7 tok/s overall;
+

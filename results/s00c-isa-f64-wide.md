@@ -1,0 +1,5 @@
+exp2     n  257483  max inf ULP  median 0.2515  p99.9 0.7656  over 1 ULP 13  disagreements 0  subnormal 2400  (worst at x=1023.9305460172418: card inf ref 1.7131990613916664e+308)
+log2     n  262144  max 139747.2100 ULP  median 0.0830  p99.9 273.0361  over 1 ULP 68418  disagreements 0  subnormal 0  (worst at x=1.0000037434845148: card 5.4006964363482508e-06 ref 5.4006964364666213e-06)
+log2 on [0.5, 2]: n 132342, max absolute error 3.680e-16 (2^-52 = 2.2e-16)
+sigmoid  n  262144  max 2.8784 ULP  median 0.4072  p99.9 1.8457  over 1 ULP 18045  disagreements 0  subnormal 0  (worst at x=-36.745975940963191: card 1.1000829069751271e-16 ref 1.1000829069751275e-16)
+exp      n  246074  max inf ULP  median 0.2524  p99.9 0.8447  over 1 ULP 35  disagreements 0  subnormal 7540  (worst at x=709.7543401049179: card inf ref 1.747404357793825e+308)
