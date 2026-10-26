@@ -1,27 +1,23 @@
-╔══════════════════════════════════ desktop host (x86-64) ═══════════════════════════════════╗
-║ ┌──────────────────────────────┐   ┌──────────────────────────────┐   ┌────────────────────┐ ║
-║ │ build.sh                     │   │ host/cortex (double logits)  │   │ host references    │ ║
-║ │ S3 clang -march=knc, knc-cc  │   │ stages ckpt 46,926,848 B at  │   │ tools/col-ref      │ ║
-║ │ phi-isa-audit per binary     │   │ CX_STAGE; mailbox ops LOAD,  │   │ tools/train-check  │ ║
-║ │ -> build/card/{isa,col-gate, │   │ RESET, BUS, STEP, EXIT;      │   │ tools/ctrain-check │ ║
-║ │    train-gate,cluster-gate,  │   │ sampler on 4096 doubles      │   │ tools/isa-host     │ ║
-║ │    cortexd}                  │   │                              │   │ (long double judge)│ ║
-║ └──────────────┬───────────────┘   └──────────────┬───────────────┘   └─────────▲──────────┘ ║
-║                │ phi put (control socket)         │ /dev/shm/phi-hostmem part 1344 MiB       │ ║
-╚════════════════╪══════════════════════════════════╪════════════════════════════════════════╪══╝
-                 ▼                                  ▼  PCIe: mailbox + DMA channel 2             │ dumps (phi get)
-╔════════════════╪══════════════════════════════════╪════════════════════════════════════════╪══╗
-║ Xeon Phi 7120A │ 61 cores x 4 threads, 1.238 GHz, 15 GiB GDDR5, L2 512 KiB/core             │  ║
-║ ┌──────────────▼──────────────────────────────────▼────────────────────────────────────────┴┐ ║
-║ │ /tmp/cortex64: 120 F64 columns, 2 per core (cores 0..59), lockstep over 32-token chunks   │ ║
-║ │ ┌────────────────────────┐  ┌────────────────────────┐  ┌───────────────────────────────┐ │ ║
-║ │ │ column c (thread)      │  │ consensus (all threads)│  │ tied head over ETB (4 MiB)    │ │ ║
-║ │ │ 44,512 doubles + T 64x64│ │ vote u_c g_c -> 12     │  │ own vocab blocks per thread,  │ │ ║
-║ │ │ 402,176 B hot, 8 lanes │─▶│ group sums -> hc =     │─▶│ (max,sum) softmax exchange,   │ │ ║
-║ │ │ vpu.h: rcp/rsqrt/exp/  │  │ RMSNorm(sum) cg        │  │ dl -> dhc 2-level reduction,  │ │ ║
-║ │ │ log2 from F32 seeds    │◀─│ 3 barriers / step      │◀─│ GET -> Adam -> ES refresh     │ │ ║
-║ │ └────────────────────────┘  └────────────────────────┘  └───────────────────────────────┘ │ ║
-║ │ measured: fwd 973-1,155 us/step, bwd 982-1,019 us/step, L2 misses 9,248-9,261 /step/thr   │ ║
-║ │ training RATE_F64 tok/s (F32 same card RATE_F32); gates vs host double: 1.7e-15..6.9e-15  │ ║
-║ └────────────────────────────────────────────────────────────────────────────────────────────┘ ║
+╔═ desktop host ════════════════════════════════════════════════════════════════════════════════╗
+║ ┌────────────────────────┐  ┌────────────────────────────┐  ┌──────────────────────────────┐  ║
+║ │ build.sh               │  │ host/cortex                │  │ host references (double)     │  ║
+║ │ S3 clang -march=knc    │  │ stages ckpt 46,926,848 B   │  │ col-ref, train-check,        │  ║
+║ │ knc-cc, phi-isa-audit  │  │ mailbox LOAD/RESET/STEP    │  │ ctrain-check (bus live/zero) │  ║
+║ │ -> build/card/*        │  │ sampler on 4096 doubles    │  │ isa-host: long double judge  │  ║
+║ └───────────┬────────────┘  └─────────────┬──────────────┘  └──────────────▲───────────────┘  ║
+║             │ phi put                     │ /dev/shm/phi-hostmem, part 1344 MiB            │  ║
+╚═════════════╪═════════════════════════════╪════════════════════════════════════════════════╪══╝
+              ▼                             ▼ PCIe: mailbox words + DMA channel 2         │ dumps
+╔═ Xeon Phi 7120A: 61 cores x 4 threads, 1.238 GHz, 15 GiB GDDR5, L2 512 KiB per core ══════════╗
+║ ┌───────────▼─────────────────────────────▼────────────────────────────────────────────────┴┐ ║
+║ │ /tmp/cortex64: 120 F64 columns, 2 per core on cores 0..59, lockstep over 32-token chunks  │ ║
+║ │ ┌──────────────────────┐   ┌──────────────────────┐   ┌─────────────────────────────────┐ │ ║
+║ │ │ column (one thread)  │   │ consensus            │   │ tied head over ETB (4 MiB)      │ │ ║
+║ │ │ 44,512 params + T    │──▶│ vote g_c u_c, 12     │──▶│ own vocab blocks per thread,    │ │ ║
+║ │ │ 402,176 B hot, 8 ln  │   │ group sums, hc =     │   │ (max,sum) exchange, dl -> dhc,  │ │ ║
+║ │ │ vpu.h F64 from F32   │◀──│ RMSNorm(sum) cg      │◀──│ GET -> Adam -> ES refresh       │ │ ║
+║ │ └──────────────────────┘   └──────────────────────┘   └─────────────────────────────────┘ │ ║
+║ │ fwd 882 us/step, bwd+Adam 1,104 us/step, 503 tok/s (F32: 324 + 470 us, 1,260 tok/s)       │ ║
+║ │ valid 6.2813 bits/token at 320k tokens (F32 6.4369); gates vs host double 1.7e-15..6.9e-15│ ║
+║ └───────────────────────────────────────────────────────────────────────────────────────────┘ ║
 ╚═══════════════════════════════════════════════════════════════════════════════════════════════╝
